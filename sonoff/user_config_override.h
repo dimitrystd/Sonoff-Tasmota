@@ -36,9 +36,89 @@
 //#endif
 //#define CFG_HOLDER             0x20161210
 
-//#ifdef STA_SSID1
-//#undef STA_SSID1
-//#endif
-//#define STA_SSID1              "yourssid1"
+#ifdef STA_SSID1
+    #undef STA_SSID1
+    #undef STA_PASS1
+#endif
+// Define actual password in credentials.h
+#include "credentials.h"
 
+#ifdef WIFI_CONFIG_TOOL
+    #undef WIFI_CONFIG_TOOL
+#endif
+#define WIFI_CONFIG_TOOL       WIFI_RETRY
+
+#ifdef PROJECT
+    #undef PROJECT
+#endif
+#define PROJECT                "h801_bedroom"
+
+#ifdef SERIAL_LOG_LEVEL
+    #undef SERIAL_LOG_LEVEL
+#endif
+#define SERIAL_LOG_LEVEL       LOG_LEVEL_NONE
+
+#ifdef OTA_URL
+    #undef OTA_URL
+#endi
+#define OTA_URL                "http://dms-ota-firmware.s3.amazonaws.com/sonoff-tasmota/" PROJECT ".ino.bin"  // [OtaUrl]
+
+#ifdef USE_MQTT_TLS
+    #undef MQTT_HOST
+    #undef MQTT_PORT
+    #undef MQTT_USER
+    #undef MQTT_PASS
+    #undef MQTT_CLIENT_ID
+#endif
+#define MQTT_HOST            "192.168.1.3" // [MqttHost]
+#define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
+#define MQTT_USER            ""       // [MqttUser] Optional user
+#define MQTT_PASS            ""       // [MqttPassword] Optional password
+#define MQTT_CLIENT_ID       "DVES_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
+
+#ifdef USE_DOMOTICZ
+    #undef USE_DOMOTICZ
+#endif
+
+#ifdef USE_DISCOVERY
+    #undef USE_DISCOVERY
+#endif
+
+#undef NTP_SERVER1
+#undef NTP_SERVER2
+#undef NTP_SERVER3
+#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address
+#define NTP_SERVER2            "time.nist.gov"    // [NtpServer2] Select second NTP server by name or IP address
+#define NTP_SERVER3            "time-a.nist.gov"  // [NtpServer3] Select third NTP server by name or IP address
+
+#undef TIME_DST
+#undef TIME_STD
+#undef APP_TIMEZONE
+// second Sunday in March and ends on the first Sunday in November, with the time changes taking place at 2:00 a.m. local time
+#define TIME_DST               Second, Sun, Mar, 2, +120  // Last sunday in march at 02:00 +120 minutes
+#define TIME_STD               First, Sun, Nov, 2, +60   // Last sunday in october 02:00 +60 minutes
+#define APP_TIMEZONE           -5                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
+
+#ifdef WS2812_LEDS
+    #undef WS2812_LEDS
+#endif
+
+#ifdef USE_DS18x20
+    #undef USE_DS18x20
+#endif
+
+#ifdef USE_I2C
+    #undef USE_I2C
+#endif
+
+#ifdef USE_IR_REMOTE
+    #undef USE_IR_REMOTE
+#endif
+
+<<<<<<< 085dcd5737c5e81101c126ab64d0f3b1b26dd500
 #endif  // _USER_CONFIG_OVERRIDE_H_
+=======
+#ifdef USE_WS2812
+    #undef USE_WS2812
+#endif
+>>>>>>> Added initial configuration for H801
