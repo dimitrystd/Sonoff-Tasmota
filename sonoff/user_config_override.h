@@ -36,12 +36,15 @@
 //#endif
 //#define CFG_HOLDER             0x20161210
 
-#ifdef STA_SSID1
-    #undef STA_SSID1
-    #undef STA_PASS1
-#endif
+#undef STA_SSID1
+#undef STA_PASS1
+#undef STA_SSID2
+#undef STA_PASS2
 // Define actual password in credentials.h
 #include "credentials.h"
+// Reset the 2nd AP because we don't use it
+#define STA_SSID2              ""      // [Ssid2] Optional alternate AP Wifi SSID
+#define STA_PASS2              ""  // [Password2] Optional alternate AP Wifi password
 
 #ifdef WIFI_CONFIG_TOOL
     #undef WIFI_CONFIG_TOOL
@@ -60,21 +63,22 @@
 
 #ifdef OTA_URL
     #undef OTA_URL
-#endi
+#endif
 #define OTA_URL                "http://dms-ota-firmware.s3.amazonaws.com/sonoff-tasmota/" PROJECT ".ino.bin"  // [OtaUrl]
 
-#ifdef USE_MQTT_TLS
+#ifdef MQTT_USE
     #undef MQTT_HOST
     #undef MQTT_PORT
     #undef MQTT_USER
     #undef MQTT_PASS
     #undef MQTT_CLIENT_ID
+
+    #define MQTT_HOST            "192.168.1.3" // [MqttHost]
+    #define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
+    #define MQTT_USER            ""       // [MqttUser] Optional user
+    #define MQTT_PASS            ""       // [MqttPassword] Optional password
+    #define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 #endif
-#define MQTT_HOST            "192.168.1.3" // [MqttHost]
-#define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
-#define MQTT_USER            ""       // [MqttUser] Optional user
-#define MQTT_PASS            ""       // [MqttPassword] Optional password
-#define MQTT_CLIENT_ID       "DVES_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 
 #ifdef USE_DOMOTICZ
     #undef USE_DOMOTICZ
