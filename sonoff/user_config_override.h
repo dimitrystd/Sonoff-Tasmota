@@ -54,7 +54,7 @@
 #ifdef PROJECT
     #undef PROJECT
 #endif
-#define PROJECT                "h801_bedroom"
+#define PROJECT                "ed_bedroom" // Electrodragon http://www.electrodragon.com/product/wifi-iot-relay-board-based-esp8266/
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
