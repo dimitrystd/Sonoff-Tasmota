@@ -73,7 +73,7 @@
     #undef MQTT_PASS
     #undef MQTT_CLIENT_ID
 
-    #define MQTT_HOST            "192.168.1.3" // [MqttHost]
+    #define MQTT_HOST            "192.168.1.2" // [MqttHost]
     #define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
     #define MQTT_USER            ""       // [MqttUser] Optional user
     #define MQTT_PASS            ""       // [MqttPassword] Optional password
@@ -119,10 +119,8 @@
     #undef USE_IR_REMOTE
 #endif
 
-<<<<<<< 085dcd5737c5e81101c126ab64d0f3b1b26dd500
-#endif  // _USER_CONFIG_OVERRIDE_H_
-=======
 #ifdef USE_WS2812
     #undef USE_WS2812
 #endif
->>>>>>> Added initial configuration for H801
+
+#endif  // _USER_CONFIG_OVERRIDE_H_
