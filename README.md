@@ -1,3 +1,13 @@
+## Customization
+Changed project name; module type; wifi.
+Before start to use H801 module you must run in console
+```
+speed 3
+fade on
+SetOption15 on
+```
+The last command will restart module, so wait for additional 10s.
+
 ## Sonoff-Tasmota
 Provide ESP8266 based Sonoff by [iTead Studio](https://www.itead.cc/) and ElectroDragon IoT Relay with Serial, Web and MQTT control allowing 'Over the Air' or OTA firmware updates using Arduino IDE.
 
