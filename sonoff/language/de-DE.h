@@ -100,12 +100,12 @@
 #define D_FREE_MEMORY "freier Speicher"
 #define D_FREEMEMORY "frei"
 #define D_FROM "von"
-#define D_GATEWAY "gateway"
+#define D_GATEWAY "Gateway"
 #define D_GROUP "Gruppe"
 #define D_HEAPSIZE "Heap-Größe"
 #define D_HIGH "hoch"
 #define D_HOST "host"
-#define D_HOSTNAME "hostname"
+#define D_HOSTNAME "Hostname"
 #define D_HUMIDITY "Feuchtigkeit"
 #define D_ILLUMINANCE "Beleuchtungsintensität"
 #define D_IMMEDIATE "direkt"      // Button immediate
@@ -187,9 +187,10 @@
 #define D_UNKNOWN "unbekannt"
 #define D_UPGRADE "upgrade"
 #define D_UPLOAD "upload"
-#define D_UPTIME "uptime"
-#define D_UTC_TIME "UTC"
+#define D_UPTIME "Laufzeit"
 #define D_USER "Benutzer"
+#define D_UTC_TIME "UTC"
+#define D_UV_LEVEL "UV Level"
 #define D_VCC "VCC"
 #define D_VERSION "Version"
 #define D_VOLTAGE "Spannung"
@@ -273,7 +274,7 @@
 #define D_CONFIGURE_MQTT "MQTT konfigurieren"
 #define D_CONFIGURE_DOMOTICZ "Domoticz konfigurieren"
 #define D_CONFIGURE_LOGGING "Logging konfigurieren"
-#define D_CONFIGURE_OTHER "Andere konfigurieren"
+#define D_CONFIGURE_OTHER "Sonstige Konfiguration"
 #define D_CONFIRM_RESET_CONFIGURATION "Zurücksetzen der Konfiguration bestätigen"
 #define D_RESET_CONFIGURATION "Konfiguration zurücksetzen"
 #define D_BACKUP_CONFIGURATION "Konfiguration sichern"
@@ -373,7 +374,6 @@
 #define D_DOMOTICZ_KEY_IDX "Key idx"
 #define D_DOMOTICZ_SWITCH_IDX "Switch idx"
 #define D_DOMOTICZ_SENSOR_IDX "Sensor idx"
-  #define DOMOTICZ_SENSORS_MAX_STRING_LENGTH 14
   #define D_DOMOTICZ_TEMP "Temp"
   #define D_DOMOTICZ_TEMP_HUM "Temp,Hum"
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
@@ -406,6 +406,7 @@
 #define D_LEARNING_ACTIVE "Anlernen aktiv"
 #define D_LEARN_FAILED "Anlernen fehlgeschlagen"
 #define D_LEARNED "angelernt"
+#define D_SAVED "gespeichert"
 
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast deaktiviert"
@@ -443,9 +444,9 @@
 #define D_POWERMONITOR "PowerMonitor"
 #define D_ENERGYMONITOR "EnergyMonitor"
 #define D_MAXENERGYREACHED "MaxEnergyReached"
-#define D_ENERGY_TODAY "Strom heute"
-#define D_ENERGY_YESTERDAY "Strom gestern"
-#define D_ENERGY_TOTAL "Stromtotal"
+#define D_ENERGY_TODAY "Energie heute"
+#define D_ENERGY_YESTERDAY "Energie gestern"
+#define D_ENERGY_TOTAL "Energie insgesamt"
 
 // xsns_sht1x.ino
 #define D_SENSOR_DID_NOT_ACK_COMMAND "Sensor hat ACK-Befehl nicht ausgeführt"
@@ -643,24 +644,26 @@
 #define D_CMND_IRHVAC "IRHVAC"
 
 // Commands xdrv_snfbridge.ino
+#define D_CMND_RFCODE "RfCode"
+#define D_CMND_RFHIGH "RfHigh"
+#define D_CMND_RFHOST "RfHost"
 #define D_CMND_RFKEY "RfKey"
-#define D_CMND_RFDEFAULT "RfDefault"
+#define D_CMND_RFLOW "RfLow"
+#define D_CMND_RFSYNC "RfSync"
 
 // Commands xdrv_snfled.ino
 #define D_CMND_COLOR "Color"
 #define D_CMND_COLORTEMPERATURE "CT"
 #define D_CMND_DIMMER "Dimmer"
+#define D_CMND_LED "Led"
 #define D_CMND_LEDTABLE "LedTable"
 #define D_CMND_FADE "Fade"
-#define D_CMND_SPEED "Speed"
-#define D_CMND_WAKEUPDURATION "WakeUpDuration"
-#define D_CMND_WAKEUP "Wakeup"
-
-// Commands xdrv_ws2812.ino
 #define D_CMND_PIXELS "Pixels"
-#define D_CMND_LED "Led"
-#define D_CMND_WIDTH "Width"
 #define D_CMND_SCHEME "Scheme"
+#define D_CMND_SPEED "Speed"
+#define D_CMND_WAKEUP "Wakeup"
+#define D_CMND_WAKEUPDURATION "WakeUpDuration"
+#define D_CMND_WIDTH "Width"
 
 // Commands xsns_hlw8012.ino
 #define D_CMND_POWERLOW "PowerLow"

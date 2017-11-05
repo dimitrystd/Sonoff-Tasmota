@@ -673,14 +673,11 @@ void WifiConnect()
 #ifdef MQTT_HOST_DISCOVERY
 boolean MdnsDiscoverMqttServer()
 {
-//  char ip_str[20];
-  int n;
-
   if (!mdns_begun) {
     return false;
   }
 
-  n = MDNS.queryService("mqtt", "tcp");  // Search for mqtt service
+  int n = MDNS.queryService("mqtt", "tcp");  // Search for mqtt service
 
   snprintf_P(log_data, sizeof(log_data), PSTR(D_LOG_MDNS D_QUERY_DONE " %d"), n);
   AddLog(LOG_LEVEL_INFO);
@@ -797,6 +794,17 @@ void I2cScan(char *devs, unsigned int devs_len)
   } else {
     snprintf_P(devs, devs_len, PSTR("{\"" D_CMND_I2CSCAN "\":\"" D_I2CSCAN_NO_DEVICES_FOUND "\"}"));
   }
+}
+
+boolean I2cDevice(byte addr)
+{
+  for (byte address = 1; address <= 127; address++) {
+    Wire.beginTransmission(address);
+    if (!Wire.endTransmission() && (address == addr)) {
+      return true;
+    }
+  }
+  return false;
 }
 #endif  // USE_I2C
 
@@ -1128,16 +1136,6 @@ char TempUnit()
   return (Settings.flag.temperature_conversion) ? 'F' : 'C';
 }
 
-uint16_t GetAdc0()
-{
-  uint16_t alr = 0;
-  for (byte i = 0; i < 32; i++) {
-    alr += analogRead(A0);
-    delay(1);
-  }
-  return alr >> 5;
-}
-
 double FastPrecisePow(double a, double b)
 {
   // https://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
@@ -1162,8 +1160,129 @@ double FastPrecisePow(double a, double b)
   return r * u.d;
 }
 
+char* GetTextIndexed(char* destination, size_t destination_size, uint16_t index, const char* haystack)
+{
+  // Returns empty string if not found
+  // Returns text of found
+  char* write = destination;
+  const char* read = haystack;
+
+  index++;
+  while (index--) {
+    size_t size = destination_size -1;
+    write = destination;
+    char ch = '.';
+    while ((ch != '\0') && (ch != '|')) {
+      ch = pgm_read_byte(read++);
+      if (size && (ch != '|'))  {
+        *write++ = ch;
+        size--;
+      }
+    }
+    if (0 == ch) {
+      if (index) {
+        write = destination;
+      }
+      break;
+    }
+  }
+  *write = '\0';
+  return destination;
+}
+
+int GetCommandCode(char* destination, size_t destination_size, const char* needle, const char* haystack)
+{
+  // Returns -1 of not found
+  // Returns index and command if found
+  int result = -1;
+  const char* read = haystack;
+  char* write = destination;
+  size_t maxcopy = (strlen(needle) > destination_size) ? destination_size : strlen(needle);
+
+  while (true) {
+    result++;
+    size_t size = destination_size -1;
+    write = destination;
+    char ch = '.';
+    while ((ch != '\0') && (ch != '|')) {
+      ch = pgm_read_byte(read++);
+      if (size && (ch != '|'))  {
+        *write++ = ch;
+        size--;
+      }
+    }
+    *write = '\0';
+    if (!strcasecmp(needle, destination)) {
+      break;
+    }
+    if (0 == ch) {
+      result = -1;
+      break;
+    }
+  }
+  return result;
+}
+
+#ifndef USE_ADC_VCC
+/*********************************************************************************************\
+ * ADC support
+\*********************************************************************************************/
+
+void AdcShow(boolean json)
+{
+  uint16_t analog = 0;
+  for (byte i = 0; i < 32; i++) {
+    analog += analogRead(A0);
+    delay(1);
+  }
+  analog >>= 5;
+
+  if (json) {
+    snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s, \"" D_ANALOG_INPUT0 "\":%d"), mqtt_data, analog);
+#ifdef USE_WEBSERVER
+  } else {
+    snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s{s}" D_ANALOG_INPUT0 "{m}%d{e}"), mqtt_data, analog);
+#endif  // USE_WEBSERVER
+  }
+}
+
+/*********************************************************************************************\
+ * Interface
+\*********************************************************************************************/
+
+#define XSNS_02
+
+boolean Xsns02(byte function)
+{
+  boolean result = false;
+
+  if (pin[GPIO_ADC0] < 99) {
+    switch (function) {
+//      case FUNC_XSNS_INIT:
+//        break;
+//      case FUNC_XSNS_PREP:
+//        break;
+      case FUNC_XSNS_JSON:
+        AdcShow(1);
+        break;
+#ifdef USE_WEBSERVER
+      case FUNC_XSNS_WEB:
+        AdcShow(0);
+        break;
+#endif  // USE_WEBSERVER
+    }
+  }
+  return result;
+}
+#endif  // USE_ADC_VCC
+
 /*********************************************************************************************\
  * Syslog
+ *
+ * Example:
+ *   snprintf_P(log_data, sizeof(log_data), PSTR(D_LOG_LOG "Any value %d"), value);
+ *   AddLog(LOG_LEVEL_DEBUG);
+ *
 \*********************************************************************************************/
 
 void Syslog()

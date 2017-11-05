@@ -188,8 +188,9 @@
 #define D_UPGRADE "opwaarderen"
 #define D_UPLOAD "Verzenden"
 #define D_UPTIME "Bedrijfstijd"
-#define D_UTC_TIME "UTC"
 #define D_USER "Gebruiker"
+#define D_UTC_TIME "UTC"
+#define D_UV_LEVEL "UV niveau"
 #define D_VCC "Vcc"
 #define D_VERSION "Versie"
 #define D_VOLTAGE "Spanning"
@@ -373,7 +374,6 @@
 #define D_DOMOTICZ_KEY_IDX "Toets idx"
 #define D_DOMOTICZ_SWITCH_IDX "Schakelaar idx"
 #define D_DOMOTICZ_SENSOR_IDX "Sensor idx"
-  #define DOMOTICZ_SENSORS_MAX_STRING_LENGTH 14
   #define D_DOMOTICZ_TEMP "Temp"
   #define D_DOMOTICZ_TEMP_HUM "Temp,Hum"
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
@@ -406,6 +406,7 @@
 #define D_LEARNING_ACTIVE "Leren actief"
 #define D_LEARN_FAILED "Leren mislukt"
 #define D_LEARNED "Geleerd"
+#define D_SAVED "Opgeslagen"
 
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast uitgeschakeld"
@@ -643,24 +644,26 @@
 #define D_CMND_IRHVAC "IRHVAC"
 
 // Commands xdrv_snfbridge.ino
+#define D_CMND_RFCODE "RfCode"
+#define D_CMND_RFHIGH "RfHigh"
+#define D_CMND_RFHOST "RfHost"
 #define D_CMND_RFKEY "RfKey"
-#define D_CMND_RFDEFAULT "RfDefault"
+#define D_CMND_RFLOW "RfLow"
+#define D_CMND_RFSYNC "RfSync"
 
 // Commands xdrv_snfled.ino
 #define D_CMND_COLOR "Color"
 #define D_CMND_COLORTEMPERATURE "CT"
 #define D_CMND_DIMMER "Dimmer"
+#define D_CMND_LED "Led"
 #define D_CMND_LEDTABLE "LedTable"
 #define D_CMND_FADE "Fade"
-#define D_CMND_SPEED "Speed"
-#define D_CMND_WAKEUPDURATION "WakeUpDuration"
-#define D_CMND_WAKEUP "Wakeup"
-
-// Commands xdrv_ws2812.ino
 #define D_CMND_PIXELS "Pixels"
-#define D_CMND_LED "Led"
-#define D_CMND_WIDTH "Width"
 #define D_CMND_SCHEME "Scheme"
+#define D_CMND_SPEED "Speed"
+#define D_CMND_WAKEUP "Wakeup"
+#define D_CMND_WAKEUPDURATION "WakeUpDuration"
+#define D_CMND_WIDTH "Width"
 
 // Commands xsns_hlw8012.ino
 #define D_CMND_POWERLOW "PowerLow"

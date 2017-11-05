@@ -41,8 +41,8 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t button_single : 1;            // bit 13 (v5.4.0)
     uint32_t interlock : 1;                // bit 14 (v5.6.0)
     uint32_t pwm_control : 1;              // bit 15 (v5.8.1)
-    uint32_t spare16 : 1;
-    uint32_t spare17 : 1;
+    uint32_t ws_clock_reverse : 1;         // bit 16 (v5.8.1)
+    uint32_t decimal_text : 1;             // bit 17 (v5.8.1)
     uint32_t spare18 : 1;
     uint32_t wattage_resolution : 1;
     uint32_t voltage_resolution : 1;
@@ -111,9 +111,9 @@ struct SYSCFG {
   unsigned long domoticz_relay_idx[MAX_DOMOTICZ_IDX]; // 344
   unsigned long domoticz_key_idx[MAX_DOMOTICZ_IDX];   // 354
 
-  unsigned long hlw_power_calibration;                  // 364
-  unsigned long hlw_voltage_calibration;                  // 368
-  unsigned long hlw_current_calibration;                  // 36C
+  unsigned long hlw_power_calibration;     // 364
+  unsigned long hlw_voltage_calibration;   // 368
+  unsigned long hlw_current_calibration;   // 36C
   unsigned long hlw_kWhtoday;              // 370
   unsigned long hlw_kWhyesterday;          // 374
   uint16_t      hlw_kWhdoy;                // 378
@@ -147,7 +147,7 @@ struct SYSCFG {
   uint8_t       ws_fade;                   // 3A5 Not used since 5.8.0
   uint8_t       ws_speed;                  // 3A6 Not used since 5.8.0
   uint8_t       ws_scheme;                 // 3A7 Not used since 5.8.0
-  uint8_t       ws_width;                  // 3A8 Not used since 5.8.0
+  uint8_t       ex_ws_width;               // 3A8 Not used since 5.8.0
 
   byte          free_3A9[1];               // 3A9
 
@@ -162,24 +162,25 @@ struct SYSCFG {
   uint16_t      domoticz_sensor_idx[12];   // 45C
   uint8_t       module;                    // 474
 
-  byte          free_475[15];              // 475
+  uint8_t       ws_color[4][3];            // 475
+  uint8_t       ws_width[3];               // 481
 
   myio          my_gp;                     // 484
-  uint16_t      led_pixels;                // 496
-  uint8_t       led_color[5];              // 498
-  uint8_t       led_table;                 // 49D
-  uint8_t       led_dimmer;                // 49E
+  uint16_t      light_pixels;              // 496
+  uint8_t       light_color[5];            // 498
+  uint8_t       light_correction;          // 49D
+  uint8_t       light_dimmer;              // 49E
 
   byte          free_49F[2];               // 49F
 
-  uint8_t       led_fade;                  // 4A1
-  uint8_t       led_speed;                 // 4A2
-  uint8_t       led_scheme;                // 4A3
-  uint8_t       led_width;                 // 4A4
+  uint8_t       light_fade;                // 4A1
+  uint8_t       light_speed;               // 4A2
+  uint8_t       light_scheme;              // 4A3
+  uint8_t       light_width;               // 4A4
 
   byte          free_4A5[1];               // 4A5
 
-  uint16_t      led_wakeup;                // 4A6
+  uint16_t      light_wakeup;              // 4A6
 
   byte          free_4A8[1];               // 4A8
 
@@ -190,7 +191,6 @@ struct SYSCFG {
   byte          free_531[1];               // 531
 
   uint16_t      pulse_timer[MAX_PULSETIMERS]; // 532
-  //uint16_t      ex_pwm_value[MAX_PWMS];     // 53A
 
   byte          free_542[2];               // 542
 
