@@ -51,10 +51,10 @@
 #endif
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
-#ifdef PROJECT
-    #undef PROJECT
-#endif
+#undef PROJECT
 #define PROJECT                "h801_bedroom"
+#undef MODULE
+#define MODULE                 H801
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
