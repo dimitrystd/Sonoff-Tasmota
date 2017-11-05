@@ -84,6 +84,11 @@
     #undef USE_DOMOTICZ
 #endif
 
+#ifdef FRIENDLY_NAME
+    #undef FRIENDLY_NAME
+    #define FRIENDLY_NAME        "smart-home-us - " PROJECT // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
+#endif
+
 #ifdef USE_DISCOVERY
     #undef USE_DISCOVERY
 #endif
