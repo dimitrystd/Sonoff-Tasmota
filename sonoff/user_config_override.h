@@ -80,6 +80,9 @@
     #define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 #endif
 
+#undef TELE_PERIOD
+#define TELE_PERIOD          120               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
+
 #ifdef USE_DOMOTICZ
     #undef USE_DOMOTICZ
 #endif
