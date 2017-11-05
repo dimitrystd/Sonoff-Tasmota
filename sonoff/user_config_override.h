@@ -1,4 +1,4 @@
-/*
+﻿/*
   user_config_override.h - user configuration overrides user_config.h for Sonoff-Tasmota
 
   Copyright (C) 2017  Theo Arends
@@ -52,7 +52,7 @@
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
 #undef PROJECT
-#define PROJECT                "h801_bedroom"
+#define PROJECT                "h801_kitchen"
 #undef MODULE
 #define MODULE                 H801
 
