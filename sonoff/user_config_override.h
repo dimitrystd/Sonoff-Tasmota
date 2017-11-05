@@ -98,10 +98,12 @@
 #undef TIME_DST
 #undef TIME_STD
 #undef APP_TIMEZONE
+#undef APP_LEDSTATE
 // second Sunday in March and ends on the first Sunday in November, with the time changes taking place at 2:00 a.m. local time
 #define TIME_DST               Second, Sun, Mar, 2, +120  // Last sunday in march at 02:00 +120 minutes
 #define TIME_STD               First, Sun, Nov, 2, +60   // Last sunday in october 02:00 +60 minutes
 #define APP_TIMEZONE           -5                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
+#define APP_LEDSTATE           LED_POWER_MQTT
 
 #ifdef WS2812_LEDS
     #undef WS2812_LEDS
