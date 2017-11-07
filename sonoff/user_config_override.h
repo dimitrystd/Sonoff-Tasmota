@@ -52,9 +52,9 @@
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
 #undef PROJECT
-#define PROJECT                "h801_kitchen"
+#define PROJECT                "sf_playroom"
 #undef MODULE
-#define MODULE                 H801
+#define MODULE                 SONOFF_BASIC
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
