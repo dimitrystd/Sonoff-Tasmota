@@ -52,9 +52,9 @@
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
 #undef PROJECT
-#define PROJECT                "h801_bedroom"
+#define PROJECT                "sl_corridor"
 #undef MODULE
-#define MODULE                 H801
+#define MODULE                 SLAMPHER
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
