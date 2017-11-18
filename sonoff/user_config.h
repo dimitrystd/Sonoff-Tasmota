@@ -29,9 +29,10 @@
 \*********************************************************************************************/
 
 // -- Localization --------------------------------
-//#define MY_LANGUAGE            en-GB           // Enabled by Default
-//#define MY_LANGUAGE            nl-NL
-//#define MY_LANGUAGE            de-DE
+//#define MY_LANGUAGE            en-GB           // English in Great Britain. Enabled by Default
+//#define MY_LANGUAGE            nl-NL           // Dutch in the Netherlands
+//#define MY_LANGUAGE            de-DE           // German in Germany
+//#define MY_LANGUAGE            pl-PL           // Polish in Poland
 
 // -- Project -------------------------------------
 #define PROJECT                "sonoff"          // PROJECT is used as the default topic delimiter and OTA file name
@@ -43,7 +44,7 @@
 
 // -- Wifi ----------------------------------------
 #define WIFI_IP_ADDRESS        "0.0.0.0"         // [IpAddress1] Set to 0.0.0.0 for using DHCP or IP address
-#define WIFI_GATEWAY           "192.168.2.254"   // {IpAddress2] If not using DHCP set Gateway IP address
+#define WIFI_GATEWAY           "192.168.2.254"   // [IpAddress2] If not using DHCP set Gateway IP address
 #define WIFI_SUBNETMASK        "255.255.255.0"   // [IpAddress3] If not using DHCP set Network mask
 #define WIFI_DNS               "192.168.2.27"    // [IpAddress4] If not using DHCP set DNS IP address (might be equal to WIFI_GATEWAY)
 
@@ -162,28 +163,26 @@
 // -- Sensor code selection -----------------------
 #define USE_ADC_VCC                              // Display Vcc in Power status. Disable for use as Analog input on selected devices
 
-//#define USE_DS18x20                              // Optional using OneWire library for multiple DS18B20 and/or DS18S20 (+2k code)
+//#define USE_DS18x20                              // Optional for multiple DS18B20 and/or DS18S20 sensors using library OneWire (+2k code)
 
 #define USE_I2C                                  // I2C using library wire (+10k code, 0.2k mem) - Disable by //
-  #define USE_BH1750                             // Add I2C code for BH1750 sensor
-  #define USE_BMP                                // Add I2C code for BMP/BME280 sensor
-  #define USE_HTU                                // Add I2C code for HTU21/SI7013/SI7020/SI7021 sensor
   #define USE_SHT                                // Add I2C emulating code for SHT1X sensor
+  #define USE_HTU                                // Add I2C code for HTU21/SI7013/SI7020/SI7021 sensor
+  #define USE_BMP                                // Add I2C code for BMP/BME280 sensor
+  #define USE_BH1750                             // Add I2C code for BH1750 sensor
+//  #define USE_VEML6070                           // Add I2C code for VEML6070 sensor (+0.5k code)
+//  #define USE_ADS1115                            // Add I2C code for ADS1x15 16 bit A/D converter using library i2cdevlib-Core and i2cdevlib-ADS1115 (+2k code)
+//  #define USE_INA219                             // Add I2C code for INA219 Low voltage and current sensor (+1k code)
 
 #define USE_IR_REMOTE                            // Send IR remote commands using library IRremoteESP8266 and ArduinoJson (+3k code, 0.3k mem)
 //  #define USE_IR_HVAC                            // Support for HVAC system using IR (+2k code)
   #define USE_IR_RECEIVE                         // Support for IR receiver (+4k code)
 
 #define USE_WS2812                               // WS2812 Led string using library NeoPixelBus (+5k code, +1k mem) - Disable by //
-  #define USE_WS2812_CTYPE     1                 // WS2812 Color type (0 - RGB, 1 - GRB)
+  #define USE_WS2812_CTYPE     1                 // WS2812 Color type (0 - RGB, 1 - GRB, 2 - RGBW, 3 - GRBW)
 //  #define USE_WS2812_DMA                         // DMA supports only GPIO03 (= Serial RXD) (+1k mem). When USE_WS2812_DMA is enabled expect Exceptions on Pow
-  #define CLOCK_REVERSE        0                 // WS2812 Clock display (0 - Normal, 1 - Reverse)
-  #define CLOCK_SECOND_WIDTH   1                 // WS2812 Clock second hand pixel width
-  #define CLOCK_MINUTE_WIDTH   3                 // WS2812 Clock minute hand pixel width
-  #define CLOCK_HOUR_WIDTH     5                 // WS2812 Clock hour hand pixel width
-  #define CLOCK_SECOND_COLOR   (255, 0, 255)     // WS2812 Clock second pixel color
-  #define CLOCK_MINUTE_COLOR   (0, 255, 0)       // WS2812 Clock minute pixel color
-  #define CLOCK_HOUR_COLOR     (255, 0,0 )       // WS2812 Clock hour pixel color
+
+#define USE_ARILUX_RF                            // Add code for Arilux RF remote controller (+0.8k code)
 
 /*********************************************************************************************\
  * Compile a minimal version if upgrade memory gets tight ONLY TO BE USED FOR UPGRADE STEP 1!
@@ -200,10 +199,6 @@
 
 #if defined(USE_MQTT_TLS) && defined(USE_WEBSERVER)
   #error "Select either USE_MQTT_TLS or USE_WEBSERVER as there is just not enough memory to play with"
-#endif
-
-#if (ARDUINO < 10610)
-  #error "This software is supported with Arduino IDE starting from 1.6.10 and ESP8266 Release 2.3.0"
 #endif
 
 #endif  // _USER_CONFIG_H_

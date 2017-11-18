@@ -100,12 +100,12 @@
 #define D_FREE_MEMORY "freier Speicher"
 #define D_FREEMEMORY "frei"
 #define D_FROM "von"
-#define D_GATEWAY "gateway"
+#define D_GATEWAY "Gateway"
 #define D_GROUP "Gruppe"
 #define D_HEAPSIZE "Heap-Größe"
 #define D_HIGH "hoch"
 #define D_HOST "host"
-#define D_HOSTNAME "hostname"
+#define D_HOSTNAME "Hostname"
 #define D_HUMIDITY "Feuchtigkeit"
 #define D_ILLUMINANCE "Beleuchtungsintensität"
 #define D_IMMEDIATE "direkt"      // Button immediate
@@ -187,9 +187,10 @@
 #define D_UNKNOWN "unbekannt"
 #define D_UPGRADE "upgrade"
 #define D_UPLOAD "upload"
-#define D_UPTIME "uptime"
-#define D_UTC_TIME "UTC"
+#define D_UPTIME "Laufzeit"
 #define D_USER "Benutzer"
+#define D_UTC_TIME "UTC"
+#define D_UV_LEVEL "UV Level"
 #define D_VCC "VCC"
 #define D_VERSION "Version"
 #define D_VOLTAGE "Spannung"
@@ -215,7 +216,7 @@
 #define D_SET_BAUDRATE_TO "Baudrate eingestell auf"
 #define D_RECEIVED_TOPIC "erhaltenes topic"
 #define D_DATA_SIZE "Datengröße"
-#define D_ANALOG_INPUT0 "Analog0"
+#define D_ANALOG_INPUT "Analog"
 
 #define D_FINGERPRINT "TLS-Fingerabdruck wird verifiziert..."
 #define D_TLS_CONNECT_FAILED_TO "TLS-Verbindung fehlgeschlagen an"
@@ -273,7 +274,7 @@
 #define D_CONFIGURE_MQTT "MQTT konfigurieren"
 #define D_CONFIGURE_DOMOTICZ "Domoticz konfigurieren"
 #define D_CONFIGURE_LOGGING "Logging konfigurieren"
-#define D_CONFIGURE_OTHER "Andere konfigurieren"
+#define D_CONFIGURE_OTHER "Sonstige Konfiguration"
 #define D_CONFIRM_RESET_CONFIGURATION "Zurücksetzen der Konfiguration bestätigen"
 #define D_RESET_CONFIGURATION "Konfiguration zurücksetzen"
 #define D_BACKUP_CONFIGURATION "Konfiguration sichern"
@@ -373,7 +374,6 @@
 #define D_DOMOTICZ_KEY_IDX "Key idx"
 #define D_DOMOTICZ_SWITCH_IDX "Switch idx"
 #define D_DOMOTICZ_SENSOR_IDX "Sensor idx"
-  #define DOMOTICZ_SENSORS_MAX_STRING_LENGTH 14
   #define D_DOMOTICZ_TEMP "Temp"
   #define D_DOMOTICZ_TEMP_HUM "Temp,Hum"
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
@@ -384,7 +384,7 @@
   #define D_DOMOTICZ_CURRENT "Current"
 #define D_DOMOTICZ_UPDATE_TIMER "Update timer"
 
-// xdrv_ir-send.ino
+// xdrv_irremote.ino
 #define D_INVALID_JSON "ungültiger JSON"
 #define D_PROTOCOL_NOT_SUPPORTED "Protokoll nicht unterstützt"
 #define D_IR_PROTOCOL "PROTOKOLL"
@@ -406,6 +406,7 @@
 #define D_LEARNING_ACTIVE "Anlernen aktiv"
 #define D_LEARN_FAILED "Anlernen fehlgeschlagen"
 #define D_LEARNED "angelernt"
+#define D_SAVED "gespeichert"
 
 // xdrv_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast deaktiviert"
@@ -426,28 +427,28 @@
 #define D_HUE_POST_ARGS "Hue POST args"
 #define D_3_RESPONSE_PACKETS_SENT "3 Antwortpakete gesendet"
 
-// xsns_dht.ino
+// xsns_03_hlw8012.ino
+#define D_MAXPOWERREACHED "MaxPowerReached"
+#define D_MAXPOWERREACHEDRETRY "MaxPowerReachedRetry"
+#define D_POWERMONITOR "PowerMonitor"
+#define D_ENERGYMONITOR "EnergyMonitor"
+#define D_MAXENERGYREACHED "MaxEnergyReached"
+#define D_ENERGY_TODAY "Energie heute"
+#define D_ENERGY_YESTERDAY "Energie gestern"
+#define D_ENERGY_TOTAL "Energie insgesamt"
+
+// xsns_05_ds18b20.ino
+#define D_SENSOR_BUSY "Sensor beschäftigt"
+#define D_SENSOR_CRC_ERROR "Sensor CRC-Fehler"
+
+// xsns_06_dht.ino
 #define D_TIMEOUT_WAITING_FOR "Timeout wartet auf"
 #define D_START_SIGNAL_LOW "Startausschlag niedrig"
 #define D_START_SIGNAL_HIGH "Startausschlag hoch"
 #define D_PULSE "pulse"
 #define D_CHECKSUM_FAILURE "Checksum-Fehler"
 
-// xsns_ds18b20.ino
-#define D_SENSOR_BUSY "Sensor beschäftigt"
-#define D_SENSOR_CRC_ERROR "Sensor CRC-Fehler"
-
-// xsns_hlw8012.ino
-#define D_MAXPOWERREACHED "MaxPowerReached"
-#define D_MAXPOWERREACHEDRETRY "MaxPowerReachedRetry"
-#define D_POWERMONITOR "PowerMonitor"
-#define D_ENERGYMONITOR "EnergyMonitor"
-#define D_MAXENERGYREACHED "MaxEnergyReached"
-#define D_ENERGY_TODAY "Strom heute"
-#define D_ENERGY_YESTERDAY "Strom gestern"
-#define D_ENERGY_TOTAL "Stromtotal"
-
-// xsns_sht1x.ino
+// xsns_07_sht1x.ino
 #define D_SENSOR_DID_NOT_ACK_COMMAND "Sensor hat ACK-Befehl nicht ausgeführt"
 #define D_SHT1X_FOUND "SHT1X gefunden"
 
@@ -490,27 +491,29 @@
 #define D_UNIT_WATTHOUR "Wh"
 
 // Log message prefix
-#define D_LOG_APPLICATION "APP: "
-#define D_LOG_BRIDGE "BRG: "
-#define D_LOG_CONFIG "CFG: "
-#define D_LOG_COMMAND "CMD: "
-#define D_LOG_DHT "DHT: "
-#define D_LOG_DOMOTICZ "DOM: "
-#define D_LOG_DSB "DSB: "
-#define D_LOG_HTTP "HTP: "
-#define D_LOG_I2C "I2C: "
-#define D_LOG_IRR "IRR: "
-#define D_LOG_LOG "LOG: "
-#define D_LOG_MODULE "MOD: "
-#define D_LOG_MDNS "DNS: "
-#define D_LOG_MQTT "MQT: "
-#define D_LOG_OTHER "OTH: "
-#define D_LOG_RESULT "RSL: "
-#define D_LOG_SERIAL "SER: "
-#define D_LOG_SHT1 "SHT: "
-#define D_LOG_UPLOAD "UPL: "
-#define D_LOG_UPNP "UPP: "
-#define D_LOG_WIFI "WIF: "
+#define D_LOG_APPLICATION "APP: "  // Application
+#define D_LOG_BRIDGE "BRG: "       // Bridge
+#define D_LOG_CONFIG "CFG: "       // Settings
+#define D_LOG_COMMAND "CMD: "      // Command
+#define D_LOG_DEBUG "DBG: "        // Debug
+#define D_LOG_DHT "DHT: "          // DHT sensor
+#define D_LOG_DOMOTICZ "DOM: "     // Domoticz
+#define D_LOG_DSB "DSB: "          // DS18xB20 sensor
+#define D_LOG_HTTP "HTP: "         // HTTP webserver
+#define D_LOG_I2C "I2C: "          // I2C
+#define D_LOG_IRR "IRR: "          // Infra Red Received
+#define D_LOG_LOG "LOG: "          // Logging
+#define D_LOG_MODULE "MOD: "       // Module
+#define D_LOG_MDNS "DNS: "         // mDNS
+#define D_LOG_MQTT "MQT: "         // MQTT
+#define D_LOG_OTHER "OTH: "        // Other
+#define D_LOG_RESULT "RSL: "       // Result
+#define D_LOG_RFR "RFR: "          // RF Received
+#define D_LOG_SERIAL "SER: "       // Serial
+#define D_LOG_SHT1 "SHT: "         // SHT1x sensor
+#define D_LOG_UPLOAD "UPL: "       // Upload
+#define D_LOG_UPNP "UPP: "         // UPnP
+#define D_LOG_WIFI "WIF: "         // Wifi
 
 // Result
 #define D_RSLT_RESULT "ERGEBNIS"
@@ -572,6 +575,7 @@
 #define D_CMND_PRESSURE_RESOLUTION "PressRes"
 #define D_CMND_POWER_RESOLUTION "WattRes"
 #define D_CMND_VOLTAGE_RESOLUTION "VoltRes"
+#define D_CMND_CURRENT_RESOLUTION "AmpRes"
 #define D_CMND_ENERGY_RESOLUTION "EnergyRes"
 #define D_CMND_MODULE "Module"
 #define D_CMND_MODULES "Modules"
@@ -628,6 +632,7 @@
 #define D_CMND_LEDSTATE "LedState"
 #define D_CMND_CFGDUMP "CfgDump"
 #define D_CMND_I2CSCAN "I2CScan"
+#define D_CMND_INA219MODE "Ina219Mode"
 #define D_CMND_EXCEPTION "Exception"
 
 // Commands xdrv_domoticz.ino
@@ -638,31 +643,33 @@
 #define D_CMND_SENSORIDX "SensorIdx"
 #define D_CMND_UPDATETIMER "UpdateTimer"
 
-// Commands xdrv_ir_send.ino
+// Commands xdrv_irremote.ino
 #define D_CMND_IRSEND "IRSend"
 #define D_CMND_IRHVAC "IRHVAC"
 
-// Commands xdrv_snfbridge.ino
-#define D_CMND_RFKEY "RfKey"
-#define D_CMND_RFDEFAULT "RfDefault"
-
-// Commands xdrv_snfled.ino
+// Commands xdrv_light.ino
 #define D_CMND_COLOR "Color"
 #define D_CMND_COLORTEMPERATURE "CT"
 #define D_CMND_DIMMER "Dimmer"
+#define D_CMND_LED "Led"
 #define D_CMND_LEDTABLE "LedTable"
 #define D_CMND_FADE "Fade"
-#define D_CMND_SPEED "Speed"
-#define D_CMND_WAKEUPDURATION "WakeUpDuration"
-#define D_CMND_WAKEUP "Wakeup"
-
-// Commands xdrv_ws2812.ino
 #define D_CMND_PIXELS "Pixels"
-#define D_CMND_LED "Led"
-#define D_CMND_WIDTH "Width"
 #define D_CMND_SCHEME "Scheme"
+#define D_CMND_SPEED "Speed"
+#define D_CMND_WAKEUP "Wakeup"
+#define D_CMND_WAKEUPDURATION "WakeUpDuration"
+#define D_CMND_WIDTH "Width"
 
-// Commands xsns_hlw8012.ino
+// Commands xdrv_snfbridge.ino
+#define D_CMND_RFCODE "RfCode"
+#define D_CMND_RFHIGH "RfHigh"
+#define D_CMND_RFHOST "RfHost"
+#define D_CMND_RFKEY "RfKey"
+#define D_CMND_RFLOW "RfLow"
+#define D_CMND_RFSYNC "RfSync"
+
+// Commands xsns_03_hlw8012.ino
 #define D_CMND_POWERLOW "PowerLow"
 #define D_CMND_POWERHIGH "PowerHigh"
 #define D_CMND_VOLTAGELOW "VoltageLow"

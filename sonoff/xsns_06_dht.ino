@@ -1,5 +1,5 @@
 /*
-  xsns_dht.ino - DHTxx and AM23xx temperature and humidity sensor support for Sonoff-Tasmota
+  xsns_06_dht.ino - DHTxx and AM23xx temperature and humidity sensor support for Sonoff-Tasmota
 
   Copyright (C) 2017  Theo Arends
 
@@ -27,6 +27,7 @@
 \*********************************************************************************************/
 
 #define DHT_MAX_SENSORS  3
+#define DHT_MAX_RETRY    8
 #define MIN_INTERVAL     2000
 
 uint32_t dht_max_cycles;
@@ -36,17 +37,17 @@ byte dht_sensors = 0;
 struct DHTSTRUCT {
   byte     pin;
   byte     type;
-  char     stype[10];
+  char     stype[12];
   uint32_t lastreadtime;
-  uint16_t lastresult;
+  uint8_t  lastresult;
   float    t;
   float    h = 0;
-} dht[DHT_MAX_SENSORS];
+} Dht[DHT_MAX_SENSORS];
 
 void DhtReadPrep()
 {
   for (byte i = 0; i < dht_sensors; i++) {
-    digitalWrite(dht[i].pin, HIGH);
+    digitalWrite(Dht[i].pin, HIGH);
   }
 }
 
@@ -54,7 +55,7 @@ uint32_t DhtExpectPulse(byte sensor, bool level)
 {
   uint32_t count = 0;
 
-  while (digitalRead(dht[sensor].pin) == level) {
+  while (digitalRead(Dht[sensor].pin) == level) {
     if (count++ >= dht_max_cycles) {
       return 0;
     }
@@ -67,33 +68,38 @@ void DhtRead(byte sensor)
   uint32_t cycles[80];
   uint32_t currenttime = millis();
 
-  if ((currenttime - dht[sensor].lastreadtime) < 2000) {
+  if ((currenttime - Dht[sensor].lastreadtime) < MIN_INTERVAL) {
     return;
   }
-  dht[sensor].lastreadtime = currenttime;
+  Dht[sensor].lastreadtime = currenttime;
 
   dht_data[0] = dht_data[1] = dht_data[2] = dht_data[3] = dht_data[4] = 0;
 
-//  digitalWrite(dht[sensor].pin, HIGH);
+//  digitalWrite(Dht[sensor].pin, HIGH);
 //  delay(250);
 
-  pinMode(dht[sensor].pin, OUTPUT);
-  digitalWrite(dht[sensor].pin, LOW);
+  if (Dht[sensor].lastresult > DHT_MAX_RETRY) {
+    Dht[sensor].lastresult = 0;
+    digitalWrite(Dht[sensor].pin, HIGH);  // Retry read prep
+    delay(250);
+  }
+  pinMode(Dht[sensor].pin, OUTPUT);
+  digitalWrite(Dht[sensor].pin, LOW);
   delay(20);
 
   noInterrupts();
-  digitalWrite(dht[sensor].pin, HIGH);
+  digitalWrite(Dht[sensor].pin, HIGH);
   delayMicroseconds(40);
-  pinMode(dht[sensor].pin, INPUT_PULLUP);
+  pinMode(Dht[sensor].pin, INPUT_PULLUP);
   delayMicroseconds(10);
   if (0 == DhtExpectPulse(sensor, LOW)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_LOW " " D_PULSE));
-    dht[sensor].lastresult++;
+    Dht[sensor].lastresult++;
     return;
   }
   if (0 == DhtExpectPulse(sensor, HIGH)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_HIGH " " D_PULSE));
-    dht[sensor].lastresult++;
+    Dht[sensor].lastresult++;
     return;
   }
   for (int i = 0; i < 80; i += 2) {
@@ -107,7 +113,7 @@ void DhtRead(byte sensor)
     uint32_t highCycles = cycles[2*i+1];
     if ((0 == lowCycles) || (0 == highCycles)) {
       AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_PULSE));
-      dht[sensor].lastresult++;
+      Dht[sensor].lastresult++;
       return;
     }
     dht_data[i/8] <<= 1;
@@ -121,30 +127,30 @@ void DhtRead(byte sensor)
   AddLog(LOG_LEVEL_DEBUG);
 
   if (dht_data[4] == ((dht_data[0] + dht_data[1] + dht_data[2] + dht_data[3]) & 0xFF)) {
-    dht[sensor].lastresult = 0;
+    Dht[sensor].lastresult = 0;
   } else {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_CHECKSUM_FAILURE));
-    dht[sensor].lastresult++;
+    Dht[sensor].lastresult++;
   }
 }
 
 boolean DhtReadTempHum(byte sensor, float &t, float &h)
 {
-  if (!dht[sensor].h) {
+  if (!Dht[sensor].h) {
     t = NAN;
     h = NAN;
   } else {
-    if (dht[sensor].lastresult > 8) {  // Reset after 8 misses
-      dht[sensor].t = NAN;
-      dht[sensor].h = NAN;
+    if (Dht[sensor].lastresult > DHT_MAX_RETRY) {  // Reset after 8 misses
+      Dht[sensor].t = NAN;
+      Dht[sensor].h = NAN;
     }
-    t = dht[sensor].t;
-    h = dht[sensor].h;
+    t = Dht[sensor].t;
+    h = Dht[sensor].h;
   }
 
   DhtRead(sensor);
-  if (!dht[sensor].lastresult) {
-    switch (dht[sensor].type) {
+  if (!Dht[sensor].lastresult) {
+    switch (Dht[sensor].type) {
     case GPIO_DHT11:
       h = dht_data[0];
       t = ConvertTemp(dht_data[2]);
@@ -166,10 +172,10 @@ boolean DhtReadTempHum(byte sensor, float &t, float &h)
       break;
     }
     if (!isnan(t)) {
-      dht[sensor].t = t;
+      Dht[sensor].t = t;
     }
     if (!isnan(h)) {
-      dht[sensor].h = h;
+      Dht[sensor].h = h;
     }
   }
   return (!isnan(t) && !isnan(h));
@@ -180,86 +186,91 @@ boolean DhtSetup(byte pin, byte type)
   boolean success = false;
 
   if (dht_sensors < DHT_MAX_SENSORS) {
-    dht[dht_sensors].pin = pin;
-    dht[dht_sensors].type = type;
+    Dht[dht_sensors].pin = pin;
+    Dht[dht_sensors].type = type;
     dht_sensors++;
     success = true;
   }
   return success;
 }
 
+/********************************************************************************************/
+
 void DhtInit()
 {
   dht_max_cycles = microsecondsToClockCycles(1000);  // 1 millisecond timeout for reading pulses from DHT sensor.
 
   for (byte i = 0; i < dht_sensors; i++) {
-    pinMode(dht[i].pin, INPUT_PULLUP);
-    dht[i].lastreadtime = 0;
-    dht[i].lastresult = 0;
-    switch (dht[i].type) {
-    case GPIO_DHT11:
-      strcpy_P(dht[i].stype, PSTR("DHT11"));
-      break;
-    case GPIO_DHT21:
-      strcpy_P(dht[i].stype, PSTR("AM2301"));
-      break;
-    case GPIO_DHT22:
-      strcpy_P(dht[i].stype, PSTR("DHT22"));
-    }
+    pinMode(Dht[i].pin, INPUT_PULLUP);
+    Dht[i].lastreadtime = 0;
+    Dht[i].lastresult = 0;
+    strcpy_P(Dht[i].stype, kSensors[Dht[i].type]);
     if (dht_sensors > 1) {
-      snprintf_P(dht[i].stype, sizeof(dht[i].stype), PSTR("%s-%02d"), dht[i].stype, dht[i].pin);
+      snprintf_P(Dht[i].stype, sizeof(Dht[i].stype), PSTR("%s-%02d"), Dht[i].stype, Dht[i].pin);
     }
   }
 }
 
-/*********************************************************************************************\
- * Presentation
-\*********************************************************************************************/
-
-void MqttShowDht(uint8_t* djson)
+void DhtShow(boolean json)
 {
-  char stemp1[10];
-  char stemp2[10];
+  char temperature[10];
+  char humidity[10];
   float t;
   float h;
 
   byte dsxflg = 0;
   for (byte i = 0; i < dht_sensors; i++) {
     if (DhtReadTempHum(i, t, h)) {     // Read temperature
-      dtostrfd(t, Settings.flag.temperature_resolution, stemp1);
-      dtostrfd(h, Settings.flag.humidity_resolution, stemp2);
-      snprintf_P(mqtt_data, sizeof(mqtt_data), JSON_SNS_TEMPHUM, mqtt_data, dht[i].stype, stemp1, stemp2);
-      *djson = 1;
+      dtostrfd(t, Settings.flag2.temperature_resolution, temperature);
+      dtostrfd(h, Settings.flag2.humidity_resolution, humidity);
+
+      if (json) {
+        snprintf_P(mqtt_data, sizeof(mqtt_data), JSON_SNS_TEMPHUM, mqtt_data, Dht[i].stype, temperature, humidity);
 #ifdef USE_DOMOTICZ
-      if (!dsxflg) {
-        DomoticzTempHumSensor(stemp1, stemp2);
-        dsxflg++;
-      }
+        if (!dsxflg) {
+          DomoticzTempHumSensor(temperature, humidity);
+          dsxflg++;
+        }
 #endif  // USE_DOMOTICZ
-    }
-  }
-}
-
 #ifdef USE_WEBSERVER
-String WebShowDht()
-{
-  String page = "";
-  char stemp[10];
-  char sensor[80];
-  float t;
-  float h;
-
-  for (byte i = 0; i < dht_sensors; i++) {
-    if (DhtReadTempHum(i, t, h)) {
-      dtostrfi(t, Settings.flag.temperature_resolution, stemp);
-      snprintf_P(sensor, sizeof(sensor), HTTP_SNS_TEMP, dht[i].stype, stemp, TempUnit());
-      page += sensor;
-      dtostrfi(h, Settings.flag.humidity_resolution, stemp);
-      snprintf_P(sensor, sizeof(sensor), HTTP_SNS_HUM, dht[i].stype, stemp);
-      page += sensor;
+      } else {
+        snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_TEMP, mqtt_data, Dht[i].stype, temperature, TempUnit());
+        snprintf_P(mqtt_data, sizeof(mqtt_data), HTTP_SNS_HUM, mqtt_data, Dht[i].stype, humidity);
+#endif  // USE_WEBSERVER
+      }
     }
   }
-  return page;
 }
+
+/*********************************************************************************************\
+ * Interface
+\*********************************************************************************************/
+
+#define XSNS_06
+
+boolean Xsns06(byte function)
+{
+  boolean result = false;
+
+  if (dht_flg) {
+    switch (function) {
+      case FUNC_XSNS_INIT:
+        DhtInit();
+        break;
+      case FUNC_XSNS_PREP:
+        DhtReadPrep();
+        break;
+      case FUNC_XSNS_JSON_APPEND:
+        DhtShow(1);
+        break;
+#ifdef USE_WEBSERVER
+      case FUNC_XSNS_WEB:
+        DhtShow(0);
+        break;
 #endif  // USE_WEBSERVER
+    }
+  }
+  return result;
+}
+
 #endif  // USE_DHT

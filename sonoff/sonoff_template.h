@@ -150,6 +150,7 @@ enum ProgramSelectablePins {
   GPIO_ADC0,           // ADC
   GPIO_DI,             // my92x1 PWM input
   GPIO_DCKI,           // my92x1 CLK input
+  GPIO_ALIRFRCV,       // AliLux RF Receive input
   GPIO_USER,           // User configurable
   GPIO_MAX };
 
@@ -192,6 +193,9 @@ enum SupportedModules {
   YUNSHAN,
   MAGICHOME,
   LUANIHVIO,
+  KMC_70011,
+  ARILUX_LC01,
+  ARILUX_LC11,
   MAXMODULE };
 
 /********************************************************************************************/
@@ -241,7 +245,10 @@ const uint8_t kNiceList[MAXMODULE] PROGMEM = {
   WION,
   H801,
   MAGICHOME,
+  ARILUX_LC01,
+  ARILUX_LC11,
   HUAFAN_SS,
+  KMC_70011,
   AILIGHT,
   WEMOS,
   WITTY
@@ -714,6 +721,46 @@ const mytmplt kModules[MAXMODULE] PROGMEM = {
      GPIO_LED1,        // GPIO15 Led (1 = On, 0 = Off)
      0,
      GPIO_ADC0         // ADC0 A0 Analog input
+  },
+  { "KMC 70011",       // KMC 70011 (https://www.amazon.com/KMC-Timing-Monitoring-Network-125V-240V/dp/B06XRX2GTQ)
+     GPIO_KEY1,        // GPIO00 Button
+     0, 0, 0,
+     GPIO_HLW_CF,      // GPIO04 HLW8012 CF
+     GPIO_HLW_CF1,     // GPIO05 HLW8012 CF1
+     0, 0, 0, 0, 0, 0, // Flash connection
+     GPIO_HLW_SEL,     // GPIO12 HLW8012 SEL
+     GPIO_LED1_INV,    // GPIO13 Green Led
+     GPIO_REL1,        // GPIO14 Relay
+     0, 0, 0
+  },
+  { "Arilux",          // Arilux AL-LC01 (ESP8285) - https://www.banggood.com/nl/ARILUX-AL-LC01-Super-Mini-LED-WIFI-Smart-RGB-Controller-For-RGB-LED-Strip-Light-DC-9-12V-p-1058603.html
+                       //  (PwmFrequency 1111Hz)
+     GPIO_KEY1,        // GPIO00 Optional Button
+     0,
+     GPIO_LED2_INV,    // GPIO02 RF receiver control
+     0,
+     GPIO_ALIRFRCV,    // GPIO04 IR or RF receiver (optional)
+     GPIO_PWM1,        // GPIO05 RGB LED Red
+     0, 0, 0, 0, 0, 0, // Flash connection
+     GPIO_PWM2,        // GPIO12 RGB LED Green
+     GPIO_PWM3,        // GPIO13 RGB LED Blue
+     GPIO_USER,        // GPIO14 RGBW LED White (optional - set to PWM4 for Cold White or Warm White)
+     0, 0, 0
+  },
+  { "Arilux LC11",     // Arilux AL-LC11 (ESP8266) - https://www.banggood.com/nl/ARILUX-AL-LC11-Super-Mini-LED-WIFI-APP-Controller-RF-Remote-Control-For-RGBWW-LED-Strip-DC9-28V-p-1085112.html
+                       //  (PwmFrequency 540Hz)
+     GPIO_KEY1,        // GPIO00 Optional Button
+     0,
+     GPIO_LED2_INV,    // GPIO02 RF receiver control
+     0,
+     GPIO_PWM2,        // GPIO04 RGB LED Green
+     GPIO_PWM1,        // GPIO05 RGB LED Red
+     0, 0, 0, 0, 0, 0, // Flash connection
+     GPIO_PWM5,        // GPIO12 RGBCW LED Warm
+     GPIO_PWM4,        // GPIO13 RGBW LED Cold
+     GPIO_PWM3,        // GPIO14 RGB LED Blue
+     GPIO_ALIRFRCV,    // GPIO15 RF receiver input
+     0, 0
   }
 };
 

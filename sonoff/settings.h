@@ -41,9 +41,23 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t button_single : 1;            // bit 13 (v5.4.0)
     uint32_t interlock : 1;                // bit 14 (v5.6.0)
     uint32_t pwm_control : 1;              // bit 15 (v5.8.1)
-    uint32_t spare16 : 1;
-    uint32_t spare17 : 1;
+    uint32_t ws_clock_reverse : 1;         // bit 16 (v5.8.1)
+    uint32_t decimal_text : 1;             // bit 17 (v5.8.1)
     uint32_t spare18 : 1;
+    uint32_t spare19 : 1;
+    uint32_t voltage_resolution : 1;
+    uint32_t spare21 : 1;
+    uint32_t spare22 : 1;
+    uint32_t spare23 : 1;
+    uint32_t spare24 : 1;
+    uint32_t spare25 : 1;
+    uint32_t spare26 : 1;
+    uint32_t spare27 : 1;
+    uint32_t spare28 : 1;
+    uint32_t spare29 : 1;
+    uint32_t spare30 : 1;
+    uint32_t spare31 : 1;
+    /*
     uint32_t wattage_resolution : 1;
     uint32_t voltage_resolution : 1;
     uint32_t emulation : 2;
@@ -51,8 +65,38 @@ typedef union {                            // Restricted by MISRA-C Rule 18.4 bu
     uint32_t pressure_resolution : 2;
     uint32_t humidity_resolution : 2;
     uint32_t temperature_resolution : 2;
+*/
   };
 } SysBitfield;
+
+typedef union {
+  uint32_t data;                           // Allow bit manipulation using SetOption
+  struct {
+    uint32_t spare00 : 1;
+    uint32_t spare01 : 1;
+    uint32_t spare02 : 1;
+    uint32_t spare03 : 1;
+    uint32_t spare04 : 1;
+    uint32_t spare05 : 1;
+    uint32_t spare06 : 1;
+    uint32_t spare07 : 1;
+    uint32_t spare08 : 1;
+    uint32_t spare09 : 1;
+    uint32_t spare10 : 1;
+    uint32_t spare11 : 1;
+    uint32_t spare12 : 1;
+    uint32_t spare13 : 1;
+    uint32_t spare14 : 1;
+    uint32_t current_resolution : 2;
+    uint32_t voltage_resolution : 2;
+    uint32_t wattage_resolution : 2;
+    uint32_t emulation : 2;
+    uint32_t energy_resolution : 3;
+    uint32_t pressure_resolution : 2;
+    uint32_t humidity_resolution : 2;
+    uint32_t temperature_resolution : 2;
+  };
+} SysBitfield2;
 
 struct SYSCFG {
   unsigned long cfg_holder;                // 000
@@ -111,9 +155,9 @@ struct SYSCFG {
   unsigned long domoticz_relay_idx[MAX_DOMOTICZ_IDX]; // 344
   unsigned long domoticz_key_idx[MAX_DOMOTICZ_IDX];   // 354
 
-  unsigned long hlw_power_calibration;                  // 364
-  unsigned long hlw_voltage_calibration;                  // 368
-  unsigned long hlw_current_calibration;                  // 36C
+  unsigned long hlw_power_calibration;     // 364
+  unsigned long hlw_voltage_calibration;   // 368
+  unsigned long hlw_current_calibration;   // 36C
   unsigned long hlw_kWhtoday;              // 370
   unsigned long hlw_kWhyesterday;          // 374
   uint16_t      hlw_kWhdoy;                // 378
@@ -133,8 +177,7 @@ struct SYSCFG {
   uint16_t      hlw_mkwhs;                 // 394 MaxEnergyStart
   uint16_t      mqtt_retry;                // 396
   uint8_t       poweronstate;              // 398
-
-  byte          free_399[1];               // 399
+  uint8_t       last_module;               // 399
 
   uint16_t      blinktime;                 // 39A
   uint16_t      blinkcount;                // 39C
@@ -147,7 +190,7 @@ struct SYSCFG {
   uint8_t       ws_fade;                   // 3A5 Not used since 5.8.0
   uint8_t       ws_speed;                  // 3A6 Not used since 5.8.0
   uint8_t       ws_scheme;                 // 3A7 Not used since 5.8.0
-  uint8_t       ws_width;                  // 3A8 Not used since 5.8.0
+  uint8_t       ex_ws_width;               // 3A8 Not used since 5.8.0
 
   byte          free_3A9[1];               // 3A9
 
@@ -162,24 +205,25 @@ struct SYSCFG {
   uint16_t      domoticz_sensor_idx[12];   // 45C
   uint8_t       module;                    // 474
 
-  byte          free_475[15];              // 475
+  uint8_t       ws_color[4][3];            // 475
+  uint8_t       ws_width[3];               // 481
 
   myio          my_gp;                     // 484
-  uint16_t      led_pixels;                // 496
-  uint8_t       led_color[5];              // 498
-  uint8_t       led_table;                 // 49D
-  uint8_t       led_dimmer;                // 49E
+  uint16_t      light_pixels;              // 496
+  uint8_t       light_color[5];            // 498
+  uint8_t       light_correction;          // 49D
+  uint8_t       light_dimmer;              // 49E
 
   byte          free_49F[2];               // 49F
 
-  uint8_t       led_fade;                  // 4A1
-  uint8_t       led_speed;                 // 4A2
-  uint8_t       led_scheme;                // 4A3
-  uint8_t       led_width;                 // 4A4
+  uint8_t       light_fade;                // 4A1
+  uint8_t       light_speed;               // 4A2
+  uint8_t       light_scheme;              // 4A3
+  uint8_t       light_width;               // 4A4
 
   byte          free_4A5[1];               // 4A5
 
-  uint16_t      led_wakeup;                // 4A6
+  uint16_t      light_wakeup;              // 4A6
 
   byte          free_4A8[1];               // 4A8
 
@@ -187,18 +231,17 @@ struct SYSCFG {
   uint8_t       switchmode[MAX_SWITCHES];  // 4CA
   char          ntp_server[3][33];         // 4CE
 
-  byte          free_531[1];               // 531
+  byte          ina219_mode;               // 531
 
   uint16_t      pulse_timer[MAX_PULSETIMERS]; // 532
-  //uint16_t      ex_pwm_value[MAX_PWMS];     // 53A
 
   byte          free_542[2];               // 542
 
   uint32_t      ip_address[4];             // 544
   unsigned long hlw_kWhtotal;              // 554
-  char          mqtt_fulltopic[101];       // 558
+  char          mqtt_fulltopic[100];       // 558
 
-  byte          free_5BD[3];               // 5BD
+  SysBitfield2  flag2;                     // 5BC Add flag2 since 5.9.2
 
   unsigned long pulse_counter[MAX_COUNTERS];  // 5C0
   uint16_t      pulse_counter_type;        // 5D0
