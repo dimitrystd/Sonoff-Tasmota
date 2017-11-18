@@ -1,5 +1,5 @@
 /*
-  xsns_ds18b20.ino - DS18B20 temperature sensor support for Sonoff-Tasmota
+  xsns_05_ds18b20.ino - DS18B20 temperature sensor support for Sonoff-Tasmota
 
   Copyright (C) 2017  Theo Arends
 
@@ -190,10 +190,10 @@ void Ds18b20Show(boolean json)
   if (Ds18b20ReadTemperature(t)) {  // Check if read failed
     char temperature[10];
 
-    dtostrfi(t, Settings.flag.temperature_resolution, temperature);
+    dtostrfi(t, Settings.flag2.temperature_resolution, temperature);
 
     if(json) {
-      snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s, \"DS18B20\":{\"" D_TEMPERATURE "\":%s}"), mqtt_data, temperature);
+      snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s,\"DS18B20\":{\"" D_TEMPERATURE "\":%s}"), mqtt_data, temperature);
 #ifdef USE_DOMOTICZ
       DomoticzSensor(DZ_TEMP, temperature);
 #endif  // USE_DOMOTICZ
@@ -227,7 +227,7 @@ boolean Xsns05(byte function)
       case FUNC_XSNS_PREP:
         Ds18b20ReadTempPrep();
         break;
-      case FUNC_XSNS_JSON:
+      case FUNC_XSNS_JSON_APPEND:
         Ds18b20Show(1);
         break;
 #ifdef USE_WEBSERVER

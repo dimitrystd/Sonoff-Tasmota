@@ -1,6 +1,33 @@
-/* 5.9.0a
+/* 5.9.1e
+ * Add + (plus) and - (minus) to command color to select 1 out of 12 preset colors
+ * Add + (plus) and - (minus) to command ct to control ColdWarm led ColorTemperature (+34/-34)
+ * Tune Arilux RF code
+ * Fix possible iram1_0_seg compile error by shrinking ICACHE_RAM_ATTR code
+ * Update core_esp8266_wiring_digital.c to latest (staged) level
+ * Workaround Sonoff Bridge Learn Mode hang caused by unrecognised RF code (#1181)
+ * Fix blank console log window by using XML character encoding (#1187)
+ *
+ * 5.9.1d
+ * Add support for Arilux LC11 (Clearing RF home code when selecting no Arilux module)
+ * Add fixed color options 1..12 to command Color
+ * Add + (plus) and - (minus) to commands Dimmer (+10/-10), Speed and Scheme
+ *
+ * 5.9.1c
+ * Add support for WS2812 RGBW ledstrips to be enabled in user_config.h with define USE_WS2812_CTYPE (#1156)
+ *
+ * 5.9.1b
+ * Remove spaces in JSON messages
+ * Add support for INA219 Voltage and Current sensor to be enabled in user_config.h with define USE_INA219
+ *
+ * 5.9.1a
+ * Fix PWM watchdog timeout if Dimmer is set to 100 or Color set to 0xFF (#1146)
+ *
+ * 5.9.1 20171107
  * Add external sensor function pointer interface to enable easy sensor addition
+ * Add support for ADS1115 to be enabled in user_config.h and needs libraries i2cdevlib-Core and i2cdevlib-ADS1115 (#338, #660)
  * Fix Backup Configuration file download failure by defining proper file size (#1115)
+ * Fix Exception 26 and empty console screen after usage of command WakeupDuration (#1133)
+ * Fix some changed iTead web links in README.md (#1137)
  *
  * 5.9.0 20171030
  * Rewrite code (partly) using Google C++ Style Guide (https://google.github.io/styleguide/cppguide.html)

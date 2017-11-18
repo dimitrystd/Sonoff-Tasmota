@@ -1,5 +1,5 @@
 /*
-  xsns_counter.ino - Counter sensors (water meters, electricity meters etc.) sensor support for Sonoff-Tasmota
+  xsns_01_counter.ino - Counter sensors (water meters, electricity meters etc.) sensor support for Sonoff-Tasmota
 
   Copyright (C) 2017  Maarten Damen and Theo Arends
 
@@ -103,7 +103,7 @@ void CounterShow(boolean json)
       }
 
       if (json) {
-        snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s, \"" D_COUNTER "%d\":%s"), mqtt_data, i +1, counter);
+        snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("%s,\"" D_COUNTER "%d\":%s"), mqtt_data, i +1, counter);
 #ifdef USE_DOMOTICZ
         if (1 == dsxflg) {
           DomoticzSensor(DZ_COUNT, RtcSettings.pulse_counter[i]);
@@ -135,7 +135,7 @@ boolean Xsns01(byte function)
       break;
 //    case FUNC_XSNS_PREP:
 //      break;
-    case FUNC_XSNS_JSON:
+    case FUNC_XSNS_JSON_APPEND:
       CounterShow(1);
       break;
 #ifdef USE_WEBSERVER
