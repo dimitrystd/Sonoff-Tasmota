@@ -52,9 +52,9 @@
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
 #undef PROJECT
-#define PROJECT                "ed_bedroom" // Electrodragon http://www.electrodragon.com/product/wifi-iot-relay-board-based-esp8266/
+#define PROJECT                "rf_bridge"
 #undef MODULE
-#define MODULE                 ELECTRODRAGON
+#define MODULE                 SONOFF_BRIDGE
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
