@@ -1,5 +1,5 @@
 /*
-  xsns_06_dht.ino - DHTxx and AM23xx temperature and humidity sensor support for Sonoff-Tasmota
+  xsns_06_dht.ino - DHTxx, AM23xx and SI7021 temperature and humidity sensor support for Sonoff-Tasmota
 
   Copyright (C) 2017  Theo Arends
 
@@ -19,7 +19,7 @@
 
 #ifdef USE_DHT
 /*********************************************************************************************\
- * DHT11, DHT21 (AM2301), DHT22 (AM2302, AM2321) - Temperature and Humidy
+ * DHT11, AM2301 (DHT21, DHT22, AM2302, AM2321), SI7021 - Temperature and Humidy
  *
  * Reading temperature or humidity takes about 250 milliseconds!
  * Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
@@ -51,13 +51,13 @@ void DhtReadPrep()
   }
 }
 
-uint32_t DhtExpectPulse(byte sensor, bool level)
+int32_t DhtExpectPulse(byte sensor, bool level)
 {
-  uint32_t count = 0;
+  int32_t count = 0;
 
   while (digitalRead(Dht[sensor].pin) == level) {
     if (count++ >= dht_max_cycles) {
-      return 0;
+      return -1;  // Timeout
     }
   }
   return count;
@@ -65,7 +65,7 @@ uint32_t DhtExpectPulse(byte sensor, bool level)
 
 void DhtRead(byte sensor)
 {
-  uint32_t cycles[80];
+  int32_t cycles[80];
   uint32_t currenttime = millis();
 
   if ((currenttime - Dht[sensor].lastreadtime) < MIN_INTERVAL) {
@@ -85,19 +85,24 @@ void DhtRead(byte sensor)
   }
   pinMode(Dht[sensor].pin, OUTPUT);
   digitalWrite(Dht[sensor].pin, LOW);
-  delay(20);
+
+  if (GPIO_SI7021 == Dht[sensor].type) {
+    delayMicroseconds(500);
+  } else {
+    delay(20);
+  }
 
   noInterrupts();
   digitalWrite(Dht[sensor].pin, HIGH);
   delayMicroseconds(40);
   pinMode(Dht[sensor].pin, INPUT_PULLUP);
   delayMicroseconds(10);
-  if (0 == DhtExpectPulse(sensor, LOW)) {
+  if (-1 == DhtExpectPulse(sensor, LOW)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_LOW " " D_PULSE));
     Dht[sensor].lastresult++;
     return;
   }
-  if (0 == DhtExpectPulse(sensor, HIGH)) {
+  if (-1 == DhtExpectPulse(sensor, HIGH)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_HIGH " " D_PULSE));
     Dht[sensor].lastresult++;
     return;
@@ -108,17 +113,17 @@ void DhtRead(byte sensor)
   }
   interrupts();
 
-  for (int i=0; i<40; ++i) {
-    uint32_t lowCycles  = cycles[2*i];
-    uint32_t highCycles = cycles[2*i+1];
-    if ((0 == lowCycles) || (0 == highCycles)) {
+  for (int i = 0; i < 40; ++i) {
+    int32_t lowCycles  = cycles[2*i];
+    int32_t highCycles = cycles[2*i+1];
+    if ((-1 == lowCycles) || (-1 == highCycles)) {
       AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_PULSE));
       Dht[sensor].lastresult++;
       return;
     }
     dht_data[i/8] <<= 1;
     if (highCycles > lowCycles) {
-      dht_data[i/8] |= 1;
+      dht_data[i / 8] |= 1;
     }
   }
 
@@ -153,24 +158,18 @@ boolean DhtReadTempHum(byte sensor, float &t, float &h)
     switch (Dht[sensor].type) {
     case GPIO_DHT11:
       h = dht_data[0];
-      t = ConvertTemp(dht_data[2]);
+      t = dht_data[2];
       break;
     case GPIO_DHT22:
-    case GPIO_DHT21:
-      h = dht_data[0];
-      h *= 256;
-      h += dht_data[1];
-      h *= 0.1;
-      t = dht_data[2] & 0x7F;
-      t *= 256;
-      t += dht_data[3];
-      t *= 0.1;
+    case GPIO_SI7021:
+      h = ((dht_data[0] << 8) | dht_data[1]) * 0.1;
+      t = (((dht_data[2] & 0x7F) << 8 ) | dht_data[3]) * 0.1;
       if (dht_data[2] & 0x80) {
         t *= -1;
       }
-      t = ConvertTemp(t);
       break;
     }
+    t = ConvertTemp(t);
     if (!isnan(t)) {
       Dht[sensor].t = t;
     }

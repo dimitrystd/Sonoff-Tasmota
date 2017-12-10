@@ -64,7 +64,9 @@
 #define D_BRIGHTLIGHT "Fel"
 #define D_BUILDDATETIME "BuildDateTime"
 #define D_BUTTON "DrukKnop"
+#define D_BY "door"                  // Written by me
 #define D_CELSIUS "Celsius"
+#define D_CO2 "CO2"
 #define D_CODE "code"                // Button code
 #define D_COLDLIGHT "Koud"
 #define D_COMMAND "Opdracht"
@@ -100,6 +102,7 @@
 #define D_FREE_MEMORY "Vrij geheugen"
 #define D_FREEMEMORY "Vrij"
 #define D_FROM "van"
+#define D_GAS "Gas"
 #define D_GATEWAY "Gateway"
 #define D_GROUP "Groep"
 #define D_HEAPSIZE "Heap"
@@ -107,6 +110,7 @@
 #define D_HOST "Host"
 #define D_HOSTNAME "Hostnaam"
 #define D_HUMIDITY "Luchtvochtigheid"
+#define D_ID "Id"
 #define D_ILLUMINANCE "Verlichtingssterkte"
 #define D_IMMEDIATE "onmiddelijk"      // Button immediate
 #define D_INDEX "Index"
@@ -440,6 +444,7 @@
 // xsns_05_ds18b20.ino
 #define D_SENSOR_BUSY "Sensor bezet"
 #define D_SENSOR_CRC_ERROR "Sensor CRC fout"
+#define D_SENSORS_FOUND "Aantal sensoren"
 
 // xsns_06_dht.ino
 #define D_TIMEOUT_WAITING_FOR "Te lang wachten op"
@@ -457,7 +462,7 @@
 #define D_SENSOR_NONE     "Geen"
 #define D_SENSOR_DHT11    "DHT11"
 #define D_SENSOR_AM2301   "AM2301"
-#define D_SENSOR_DHT22    "DHT22"
+#define D_SENSOR_SI7021   "SI7021"
 #define D_SENSOR_DS18X20  "DS18x20"
 #define D_SENSOR_I2C_SCL  "I2C SCL"
 #define D_SENSOR_I2C_SDA  "I2C SDA"
@@ -469,6 +474,8 @@
 #define D_SENSOR_LED      "Led"     // Suffix "1i"
 #define D_SENSOR_PWM      "PWM"     // Suffix "1"
 #define D_SENSOR_COUNTER  "Teller"  // Suffix "1"
+#define D_SENSOR_MHZ_RX   "MHZ Rx"
+#define D_SENSOR_MHZ_TX   "MHZ Tx"
 #define D_SENSOR_IRRECV   "IRrecv"
 #define D_SENSOR_SPI_CS   "SPI CS"
 #define D_SENSOR_SPI_DC   "SPI DC"
@@ -477,12 +484,14 @@
 // Units
 #define D_UNIT_AMPERE "A"
 #define D_UNIT_HOUR "h"
+#define D_UNIT_KILOOHM "kOhm"
 #define D_UNIT_KILOWATTHOUR "kWh"
 #define D_UNIT_LUX "lx"
 #define D_UNIT_MICROSECOND "us"
 #define D_UNIT_MILLIAMPERE "mA"
 #define D_UNIT_MILLISECOND "ms"
 #define D_UNIT_MINUTE "Min"
+#define D_UNIT_PPM "ppm"
 #define D_UNIT_PRESSURE "hPa"
 #define D_UNIT_SECOND "sec"
 #define D_UNIT_SECTORS "sectoren"

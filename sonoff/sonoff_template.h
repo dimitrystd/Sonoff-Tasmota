@@ -24,8 +24,8 @@
 enum UserSelectablePins {
   GPIO_NONE,           // Not used
   GPIO_DHT11,          // DHT11
-  GPIO_DHT21,          // DHT21, AM2301
-  GPIO_DHT22,          // DHT22, AM2302, AM2321
+  GPIO_DHT22,          // DHT21, DHT22, AM2301, AM2302, AM2321
+  GPIO_SI7021,         // iTead SI7021
   GPIO_DSB,            // Single wire DS18B20 or DS18S20
   GPIO_I2C_SCL,        // I2C SCL
   GPIO_I2C_SDA,        // I2C SDA
@@ -78,6 +78,8 @@ enum UserSelectablePins {
   GPIO_LED2_INV,
   GPIO_LED3_INV,
   GPIO_LED4_INV,
+  GPIO_MHZ_TXD,
+  GPIO_MHZ_RXD,
   GPIO_SENSOR_END };
 
 // Text in webpage Module Parameters and commands GPIOS and GPIO
@@ -85,7 +87,7 @@ const char kSensors[GPIO_SENSOR_END][9] PROGMEM = {
   D_SENSOR_NONE,
   D_SENSOR_DHT11,
   D_SENSOR_AM2301,
-  D_SENSOR_DHT22,
+  D_SENSOR_SI7021,
   D_SENSOR_DS18X20,
   D_SENSOR_I2C_SCL,
   D_SENSOR_I2C_SDA,
@@ -137,7 +139,9 @@ const char kSensors[GPIO_SENSOR_END][9] PROGMEM = {
   D_SENSOR_LED "1i",
   D_SENSOR_LED "2i",
   D_SENSOR_LED "3i",
-  D_SENSOR_LED "4i"
+  D_SENSOR_LED "4i",
+  D_SENSOR_MHZ_TX,
+  D_SENSOR_MHZ_RX
 };
 
 // Programmer selectable GPIO functionality offset by user selectable GPIOs
@@ -150,7 +154,7 @@ enum ProgramSelectablePins {
   GPIO_ADC0,           // ADC
   GPIO_DI,             // my92x1 PWM input
   GPIO_DCKI,           // my92x1 CLK input
-  GPIO_ALIRFRCV,       // AliLux RF Receive input
+  GPIO_ARIRFRCV,       // AliLux RF Receive input
   GPIO_USER,           // User configurable
   GPIO_MAX };
 
@@ -196,6 +200,7 @@ enum SupportedModules {
   KMC_70011,
   ARILUX_LC01,
   ARILUX_LC11,
+  SONOFF_DUAL_R2,
   MAXMODULE };
 
 /********************************************************************************************/
@@ -218,6 +223,7 @@ const uint8_t kNiceList[MAXMODULE] PROGMEM = {
   SONOFF_RF,
   SONOFF_TH,
   SONOFF_DUAL,
+  SONOFF_DUAL_R2,
   SONOFF_POW,
   SONOFF_4CH,
   SONOFF_4CHPRO,
@@ -739,7 +745,7 @@ const mytmplt kModules[MAXMODULE] PROGMEM = {
      0,
      GPIO_LED2_INV,    // GPIO02 RF receiver control
      0,
-     GPIO_ALIRFRCV,    // GPIO04 IR or RF receiver (optional)
+     GPIO_ARIRFRCV,    // GPIO04 IR or RF receiver (optional)
      GPIO_PWM1,        // GPIO05 RGB LED Red
      0, 0, 0, 0, 0, 0, // Flash connection
      GPIO_PWM2,        // GPIO12 RGB LED Green
@@ -759,8 +765,23 @@ const mytmplt kModules[MAXMODULE] PROGMEM = {
      GPIO_PWM5,        // GPIO12 RGBCW LED Warm
      GPIO_PWM4,        // GPIO13 RGBW LED Cold
      GPIO_PWM3,        // GPIO14 RGB LED Blue
-     GPIO_ALIRFRCV,    // GPIO15 RF receiver input
+     GPIO_ARIRFRCV,    // GPIO15 RF receiver input
      0, 0
+  },
+  { "Sonoff Dual R2",  // Sonoff Dual R2 (ESP8285)
+     GPIO_USER,        // GPIO00 Button 0 on header (0 = On, 1 = Off)
+     GPIO_USER,        // GPIO01 Serial RXD and Optional sensor
+     0,
+     GPIO_USER,        // GPIO03 Serial TXD and Optional sensor
+     0,
+     GPIO_REL2,        // GPIO05 Relay 2 (0 = Off, 1 = On)
+     0, 0, 0,          // Flash connection
+     GPIO_USER,        // GPIO09 Button 1 on header (0 = On, 1 = Off)
+     GPIO_KEY1,        // GPIO10 Button on casing
+     0,                // Flash connection
+     GPIO_REL1,        // GPIO12 Relay 1 (0 = Off, 1 = On)
+     GPIO_LED1_INV,    // GPIO13 Blue Led (0 = On, 1 = Off)
+     0, 0, 0, 0
   }
 };
 

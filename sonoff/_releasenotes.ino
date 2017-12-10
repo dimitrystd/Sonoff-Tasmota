@@ -1,26 +1,59 @@
-/* 5.9.1e
- * Add + (plus) and - (minus) to command color to select 1 out of 12 preset colors
- * Add + (plus) and - (minus) to command ct to control ColdWarm led ColorTemperature (+34/-34)
- * Tune Arilux RF code
- * Fix possible iram1_0_seg compile error by shrinking ICACHE_RAM_ATTR code
- * Update core_esp8266_wiring_digital.c to latest (staged) level
- * Workaround Sonoff Bridge Learn Mode hang caused by unrecognised RF code (#1181)
- * Fix blank console log window by using XML character encoding (#1187)
+/* 5.10.0a
+ * Add (experimental) support for sensor SHT3x
+ * Add support for sensor MH-Z19(B) using serial interface to be enabled with define USE_MHZ19_HARD_SERIAL in user_config.h (#561, #1248)
+ * Add (experimental) support for sensor MH-Z19(B) using SoftwareSerial to be enabled with define USE_MHZ19_SOFT_SERIAL_OBSOLETE in user_config.h (#561, #1248)
+ * Add (experimental) support for sensor MH-Z19(B) using stripped SoftwareSerial to be enabled with define USE_MHZ19_SOFT_SERIAL in user_config.h (#561, #1248)
+ * Add support for iTead SI7021 temperature and humidity sensor by consolidating DHT22 into AM2301 and using former DHT22 as SI7021 (#735)
+ * Fix BME280 calculation (#1051)
+ * Add support for BME680 using adafruit libraries (#1212)
+ * Change ADS1115 default voltage range from +/-2V to +/-6V (#1289)
+ * Add multipress support and more user configurable options to Sonoff Dual R2 (#1291)
+ * Fix Sonoff Bridge missed learned key if learned data contains 0x55 (End of Transmission) flag (#1095, #1294)
+ * Add support for TSL2561 using adafruit library (#661, #1311)
+ * Add alternative support for SHT3x enabled with define USE_SHT3X_V2 in user_config.h (#1314)
+ * Add alternative support for SHT3x enabled with define USE_SHT3X_V3 in user_config.h (#1314)
  *
- * 5.9.1d
- * Add support for Arilux LC11 (Clearing RF home code when selecting no Arilux module)
+ * 5.10.0 20171201
+ * Upgrade library ArduinoJson to 5.11.2
+ * Upgrade library IRRemoteEsp8266 to 2.2.1 + 2 commits but disabled some protocols (code size reduction)
+ * Upgrade library NeoPixelBus to 2.2.9
+ * Upgrade library OneWire to 2.3.3 + 6 commits and disabled CRC lookup-table (#define ONEWIRE_CRC8_TABLE 0) (code size reduction)
+ * Update library PubSubClient to 2.6 + 9 commits and additional delay (#790)
+ * Update core_esp8266_wiring_digital.c to latest (staged) level
+ * Patch library I2Cdevlib-Core for esp8266-core 2.4.0-rc2 compatibility
+ * Remove command EnergyReset 1..3 now replaced by EnergyReset1 to EnergyReset3
+ * Remove spaces in JSON messages (code size reduction)
+ * Renamed xsns_05_ds18x20.ino to xsns_05_ds18x20_legacy.ino still using library OneWire and providing dynamic sensor scan
+ * Fix possible iram1_0_seg compile error by shrinking ICACHE_RAM_ATTR code usage
+ * Fix PWM watchdog timeout if Dimmer is set to 100 or Color set to 0xFF (#1146)
+ * Fix Sonoff Bridge Learn Mode hang caused by unrecognised RF code (#1181)
+ * Fix blank console log window by using XML character encoding (#1187)
+ * Fix wrong response name for command HlwISet (#1214)
+ * Fix DHT type sensor timeout recognition by distinguish "signal already there" from "timeout" (#1233)
  * Add fixed color options 1..12 to command Color
  * Add + (plus) and - (minus) to commands Dimmer (+10/-10), Speed and Scheme
- *
- * 5.9.1c
- * Add support for WS2812 RGBW ledstrips to be enabled in user_config.h with define USE_WS2812_CTYPE (#1156)
- *
- * 5.9.1b
- * Remove spaces in JSON messages
+ * Add + (plus) and - (minus) to command Color to select 1 out of 12 preset colors
+ * Add + (plus) and - (minus) to command Ct to control ColdWarm led ColorTemperature (+34/-34)
+ * Add commands EnergyReset1 0..42500, EnergyReset2 0..42500 and EnergyReset3 0..42500000
+ *  to (Re)set Energy Today, Yesterday or Total respectively in Wh (#406, #685, #1202)
+ * Add optional ADS1115 driver as alternative for unsupported I2Cdevlib in esp8266-core 2.4.0-rc2
  * Add support for INA219 Voltage and Current sensor to be enabled in user_config.h with define USE_INA219
- *
- * 5.9.1a
- * Fix PWM watchdog timeout if Dimmer is set to 100 or Color set to 0xFF (#1146)
+ * Add support for Arilux LC11 (Clearing RF home code when selecting no Arilux module)
+ * Add support for WS2812 RGBW ledstrips to be enabled in user_config.h with define USE_WS2812_CTYPE (#1156)
+ * Add SettingsSaveAll routine to command SaveData to be used before controlled power down (#1202)
+ * Add option PUSHBUTTON_TOGGLE (SwitchMode 7) to allow toggling on any switch change (#1221)
+ * Add new xdrv_05_ds18x20.ino free from library OneWire and add the following features:
+ *  Add support for DS1822
+ *  Add forced setting of 12-bit resolution for selected device types (#1222)
+ *  Add read temperature retry counter (#1215)
+ *  Fix lost sensors by performing sensor probe at restart only thereby removing dynamic sensor probe (#1215)
+ *  Fix sensor address sorting using ascending sort on sensor type followed by sensor address
+ *  Rewrite JSON resulting in shorter message allowing more sensors in default firmware image:
+ *   "DS18B20-1":{"Id":"00000483C23A","Temperature":19.5},"DS18B20-2":{"Id":"0000048EC44C","Temperature":19.6}
+ * Add additional define in user_config.h to select either single sensor (defines disabled), new multi sensor (USE_DS18X20) or legacy multi sensor (USE_DS18X20_LEGACY)
+ * Add clock support for more different pixel counts (#1226)
+ * Add support for Sonoff Dual R2 (#1249)
+ * Add FriendlyName to web page tab and add program information to web page footer (#1275)
  *
  * 5.9.1 20171107
  * Add external sensor function pointer interface to enable easy sensor addition

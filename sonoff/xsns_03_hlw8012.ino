@@ -506,19 +506,21 @@ boolean HlwCommand(char *type, uint16_t index, char *dataBuf, uint16_t data_len,
     nvalue = Settings.hlw_imax;
     unit = UNIT_MILLIAMPERE;
   }
-  else if (CMND_ENERGYRESET == command_code) {
-    if ((payload >= 1) && (payload <= 3)) {
-      switch (payload) {
+  else if ((CMND_ENERGYRESET == command_code) && (index > 0) && (index <= 3)) {
+    char *p;
+    unsigned long lnum = strtoul(dataBuf, &p, 10);
+    if (p != dataBuf) {
+      switch (index) {
       case 1:
-        hlw_kWhtoday = 0;
-        RtcSettings.hlw_kWhtoday = 0;
-        Settings.hlw_kWhtoday = 0;
+        hlw_kWhtoday = lnum *100000;
+        RtcSettings.hlw_kWhtoday = hlw_kWhtoday;
+        Settings.hlw_kWhtoday = hlw_kWhtoday;
         break;
       case 2:
-        Settings.hlw_kWhyesterday = 0;
+        Settings.hlw_kWhyesterday = lnum *100000;
         break;
       case 3:
-        RtcSettings.hlw_kWhtotal = 0;
+        RtcSettings.hlw_kWhtotal = lnum *100;
         Settings.hlw_kWhtotal = RtcSettings.hlw_kWhtotal;
         break;
       }
@@ -574,7 +576,7 @@ boolean HlwCommand(char *type, uint16_t index, char *dataBuf, uint16_t data_len,
     if ((payload > 0) && (payload < 16001) && hlw_cf1_current_pulse_length) {
       Settings.hlw_current_calibration = (payload * hlw_cf1_current_pulse_length) / HLW_IREF;
     }
-    snprintf_P(command, sizeof(command), PSTR(D_CMND_HLWPCAL));
+    snprintf_P(command, sizeof(command), PSTR(D_CMND_HLWICAL));
     nvalue = Settings.hlw_current_calibration;
     unit = UNIT_MICROSECOND;
   }
