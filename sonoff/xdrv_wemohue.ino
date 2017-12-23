@@ -1,7 +1,7 @@
 /*
   xdrv_wemohue.ino - wemo and hue support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Heiko Krupp and Theo Arends
+  Copyright (C) 2018  Heiko Krupp and Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -299,13 +299,15 @@ void HandleUpnpEvent()
 {
   AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, PSTR(D_WEMO_BASIC_EVENT));
   String request = WebServer->arg(0);
-  if (request.indexOf(F("State>1</Binary")) > 0) {
-//    ExecuteCommandPower(1, 1);
-    ExecuteCommandPower(devices_present, 1);
-  }
-  if (request.indexOf(F("State>0</Binary")) > 0) {
-//    ExecuteCommandPower(1, 0);
-    ExecuteCommandPower(devices_present, 0);
+  if (request.indexOf(F("SetBinaryState")) > 0) {
+    if (request.indexOf(F("State>1</Binary")) > 0) {
+  //    ExecuteCommandPower(1, 1);
+      ExecuteCommandPower(devices_present, 1);
+    }
+    if (request.indexOf(F("State>0</Binary")) > 0) {
+  //    ExecuteCommandPower(1, 0);
+      ExecuteCommandPower(devices_present, 0);
+    }
   }
   WebServer->send(200, FPSTR(HDR_CTYPE_PLAIN), "");
 }

@@ -1,7 +1,7 @@
 /*
   sonoff_post.h - Post header file for Sonoff-Tasmota
 
-  Copyright (C) 2017  Theo Arends
+  Copyright (C) 2018  Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -57,6 +57,9 @@ void WifiWpsStatusCallback(wps_cb_status status);
 //#endif
 #ifdef USE_EMULATION
 #undef USE_EMULATION                        // Disable Wemo or Hue emulation
+#endif
+#ifdef USE_PZEM004T
+#undef USE_PZEM004T                         // Disable PZEM004T energy sensor
 #endif
 #ifdef USE_DS18x20
 #undef USE_DS18x20                          // Disable DS18x20 sensor

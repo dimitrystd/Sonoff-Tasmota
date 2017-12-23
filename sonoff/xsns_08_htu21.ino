@@ -1,7 +1,7 @@
 /*
   xsns_08_htu21.ino - HTU21 temperature and humidity sensor support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Heiko Krupp and Theo Arends
+  Copyright (C) 2018  Heiko Krupp and Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -286,14 +286,14 @@ boolean Xsns08(byte function)
     switch (function) {
 //      case FUNC_XSNS_INIT:
 //        break;
-      case FUNC_XSNS_PREP:
+      case FUNC_XSNS_PREP_BEFORE_TELEPERIOD:
         HtuDetect();
         break;
       case FUNC_XSNS_JSON_APPEND:
         HtuShow(1);
         break;
 #ifdef USE_WEBSERVER
-      case FUNC_XSNS_WEB:
+      case FUNC_XSNS_WEB_APPEND:
         HtuShow(0);
         break;
 #endif  // USE_WEBSERVER

@@ -1,7 +1,7 @@
 /*
   xsns_14_sht3x.ino - SHT3X temperature and humidity sensor support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Theo Arends
+  Copyright (C) 2018  Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -128,14 +128,14 @@ boolean Xsns14(byte function)
       case FUNC_XSNS_INIT:
         Sht3xDetect();
         break;
-      case FUNC_XSNS_PREP:
+      case FUNC_XSNS_PREP_BEFORE_TELEPERIOD:
         Sht3xConvert();
         break;
       case FUNC_XSNS_JSON_APPEND:
         Sht3xShow(1);
         break;
 #ifdef USE_WEBSERVER
-      case FUNC_XSNS_WEB:
+      case FUNC_XSNS_WEB_APPEND:
         Sht3xShow(0);
         Sht3xConvert();
         break;

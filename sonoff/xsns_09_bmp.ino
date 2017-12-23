@@ -1,7 +1,7 @@
 /*
   xsns_09_bmp.ino - BMP pressure, temperature, humidity and gas sensor support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Heiko Krupp and Theo Arends
+  Copyright (C) 2018  Heiko Krupp and Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -426,9 +426,9 @@ void BmpShow(boolean json)
 #ifdef USE_BME680
       case BME680_CHIPID:
         t = bme680.temperature;
-        p = bme680.pressure;
+        p = bme680.pressure / 100.0;
         h = bme680.humidity;
-        g = bme680.gas_resistance;
+        g = bme680.gas_resistance / 1000.0;
         break;
 #endif  // USE_BME680
     }
@@ -450,7 +450,7 @@ void BmpShow(boolean json)
     dtostrfd(h, Settings.flag2.humidity_resolution, humidity);
 #ifdef USE_BME680
     char gas_resistance[10];
-    dtostrfd(g / 1000.0, 2, gas_resistance);
+    dtostrfd(g, 2, gas_resistance);
 #endif  // USE_BME680
 
     if (json) {
@@ -504,7 +504,7 @@ boolean Xsns09(byte function)
     switch (function) {
 //      case FUNC_XSNS_INIT:
 //        break;
-      case FUNC_XSNS_PREP:
+      case FUNC_XSNS_PREP_BEFORE_TELEPERIOD:
         BmpDetect();
 #ifdef USE_BME680
         Bme680PerformReading();
@@ -514,7 +514,7 @@ boolean Xsns09(byte function)
         BmpShow(1);
         break;
 #ifdef USE_WEBSERVER
-      case FUNC_XSNS_WEB:
+      case FUNC_XSNS_WEB_APPEND:
         BmpShow(0);
 #ifdef USE_BME680
         Bme680PerformReading();

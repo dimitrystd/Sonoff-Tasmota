@@ -1,7 +1,7 @@
 /*
   en-GB.h - localization for English - United Kingdom for Sonoff-Tasmota
 
-  Copyright (C) 2017  Theo Arends
+  Copyright (C) 2018  Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@
 #define D_BUTTON "Button"
 #define D_BY "by"                    // Written by me
 #define D_CELSIUS "Celsius"
-#define D_CO2 "CO2"
+#define D_CO2 "Carbon dioxide"
 #define D_CODE "code"                // Button code
 #define D_COLDLIGHT "Cold"
 #define D_COMMAND "Command"
@@ -118,6 +118,7 @@
 #define D_INITIALIZED "Initialized"
 #define D_IP_ADDRESS "IP Address"
 #define D_LIGHT "Light"
+#define D_LIMIT "Limit"
 #define D_LOCAL_TIME "Local"
 #define D_LOW "Low"
 #define D_LWT "LWT"
@@ -233,7 +234,7 @@
 #define D_OSWATCH "osWatch"
 #define D_BLOCKED_LOOP "Blocked Loop"
 #define D_WPS_FAILED_WITH_STATUS "WPSconfig FAILED with status"
-#define D_ACTIVE_FOR_1_MINUTE "active for 1 minute"
+#define D_ACTIVE_FOR_3_MINUTES "active for 3 minutes"
 #define D_FAILED_TO_START "failed to start"
 #define D_PATCH_ISSUE_2186 "Patch issue 2186"
 #define D_CONNECTING_TO_AP "Connecting to AP"
@@ -386,6 +387,7 @@
   #define D_DOMOTICZ_COUNT "Count"
   #define D_DOMOTICZ_VOLTAGE "Voltage"
   #define D_DOMOTICZ_CURRENT "Current"
+  #define D_DOMOTICZ_AIRQUALITY "AirQuality"
 #define D_DOMOTICZ_UPDATE_TIMER "Update timer"
 
 // xdrv_irremote.ino
@@ -431,7 +433,7 @@
 #define D_HUE_POST_ARGS "Hue POST args"
 #define D_3_RESPONSE_PACKETS_SENT "3 response packets sent"
 
-// xsns_03_hlw8012.ino
+// xsns_03_energy.ino
 #define D_MAXPOWERREACHED "MaxPowerReached"
 #define D_MAXPOWERREACHEDRETRY "MaxPowerReachedRetry"
 #define D_POWERMONITOR "PowerMonitor"
@@ -477,6 +479,10 @@
 #define D_SENSOR_IRRECV   "IRrecv"
 #define D_SENSOR_MHZ_RX   "MHZ Rx"
 #define D_SENSOR_MHZ_TX   "MHZ Tx"
+#define D_SENSOR_PZEM_RX  "PZEM Rx"
+#define D_SENSOR_PZEM_TX  "PZEM Tx"
+#define D_SENSOR_SAIR_RX  "SAir Rx"
+#define D_SENSOR_SAIR_TX  "SAir Tx"
 #define D_SENSOR_SPI_CS   "SPI CS"
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BLight"
@@ -678,7 +684,7 @@
 #define D_CMND_RFLOW "RfLow"
 #define D_CMND_RFSYNC "RfSync"
 
-// Commands xsns_03_hlw8012.ino
+// Commands xsns_03_energy.ino
 #define D_CMND_POWERLOW "PowerLow"
 #define D_CMND_POWERHIGH "PowerHigh"
 #define D_CMND_VOLTAGELOW "VoltageLow"

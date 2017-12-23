@@ -1,7 +1,7 @@
 /*
   xdrv_light.ino - PWM, WS2812 and sonoff led support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Theo Arends
+  Copyright (C) 2018  Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -339,6 +339,9 @@ void LightInit(void)
   if (light_type < LT_PWM6) {           // PWM
     for (byte i = 0; i < light_type; i++) {
       Settings.pwm_value[i] = 0;        // Disable direct PWM control
+      if (pin[GPIO_PWM1 +i] < 99) {
+        pinMode(pin[GPIO_PWM1 +i], OUTPUT);
+      }
     }
     if (LT_PWM1 == light_type) {
       Settings.light_color[0] = 255;    // One PWM channel only supports Dimmer but needs max color

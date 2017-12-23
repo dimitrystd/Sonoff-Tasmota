@@ -1,7 +1,7 @@
 /*
   de-DE.h - localization for German - Germany for Sonoff-Tasmota
 
-  Copyright (C) 2017  VinceMasuka
+  Copyright (C) 2018  VinceMasuka
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@
 #define D_BUTTON "Knopf"
 #define D_BY "von"                   // Written by me
 #define D_CELSIUS "Celsius"
-#define D_CO2 "CO2"
+#define D_CO2 "Kohlenstoffdioxid"
 #define D_CODE "code"                // Button code
 #define D_COLDLIGHT "kalt"
 #define D_COMMAND "Befehl"
@@ -118,6 +118,7 @@
 #define D_INITIALIZED "initialisiert"
 #define D_IP_ADDRESS "IP-Addresse"
 #define D_LIGHT "Licht"
+#define D_LIMIT "Grenzwert"
 #define D_LOCAL_TIME "lokale Zeit"
 #define D_LOW "niedrig"
 #define D_LWT "LWT"
@@ -233,7 +234,7 @@
 #define D_OSWATCH "osWatch"
 #define D_BLOCKED_LOOP "Blocked Loop"
 #define D_WPS_FAILED_WITH_STATUS "WPS fehlgeschlagen mit Status"
-#define D_ACTIVE_FOR_1_MINUTE "aktiv für 1 Minute"
+#define D_ACTIVE_FOR_3_MINUTES "aktiv für 3 Minuten"
 #define D_FAILED_TO_START "Starten fehlgeschlagen"
 #define D_PATCH_ISSUE_2186 "Patch-Problem 2186"
 #define D_CONNECTING_TO_AP "verbinden mit AP"
@@ -386,6 +387,7 @@
   #define D_DOMOTICZ_COUNT "Count"
   #define D_DOMOTICZ_VOLTAGE "Voltage"
   #define D_DOMOTICZ_CURRENT "Current"
+  #define D_DOMOTICZ_AIRQUALITY "AirQuality"
 #define D_DOMOTICZ_UPDATE_TIMER "Update timer"
 
 // xdrv_irremote.ino
@@ -431,7 +433,7 @@
 #define D_HUE_POST_ARGS "Hue POST args"
 #define D_3_RESPONSE_PACKETS_SENT "3 Antwortpakete gesendet"
 
-// xsns_03_hlw8012.ino
+// xsns_03_energy.ino
 #define D_MAXPOWERREACHED "MaxPowerReached"
 #define D_MAXPOWERREACHEDRETRY "MaxPowerReachedRetry"
 #define D_POWERMONITOR "PowerMonitor"
@@ -473,10 +475,14 @@
 #define D_SENSOR_RELAY    "Relay "    // Suffix "1i"
 #define D_SENSOR_LED      "LED "      // Suffix "1i"
 #define D_SENSOR_PWM      "PWM "      // Suffix "1"
-#define D_SENSOR_COUNTER  "Counter"  // Suffix "1"
+#define D_SENSOR_COUNTER  "Counter"   // Suffix "1"
 #define D_SENSOR_IRRECV   "IRRecv"
 #define D_SENSOR_MHZ_RX   "MHZ Rx"
 #define D_SENSOR_MHZ_TX   "MHZ Tx"
+#define D_SENSOR_PZEM_RX  "PZEM Rx"
+#define D_SENSOR_PZEM_TX  "PZEM Tx"
+#define D_SENSOR_SAIR_RX  "SAir Rx"
+#define D_SENSOR_SAIR_TX  "SAir Tx"
 #define D_SENSOR_SPI_CS   "SPI CS"
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BLight"
@@ -678,7 +684,7 @@
 #define D_CMND_RFLOW "RfLow"
 #define D_CMND_RFSYNC "RfSync"
 
-// Commands xsns_03_hlw8012.ino
+// Commands xsns_03_energy.ino
 #define D_CMND_POWERLOW "PowerLow"
 #define D_CMND_POWERHIGH "PowerHigh"
 #define D_CMND_VOLTAGELOW "VoltageLow"
