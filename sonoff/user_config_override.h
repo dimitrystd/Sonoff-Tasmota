@@ -52,9 +52,9 @@
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
 #undef PROJECT
-#define PROJECT                "rf_bridge"
+#define PROJECT                "sf_bathroom_heater"
 #undef MODULE
-#define MODULE                 SONOFF_BRIDGE
+#define MODULE                 SONOFF_BASIC
 
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
