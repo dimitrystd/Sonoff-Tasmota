@@ -1,26 +1,160 @@
-/* 5.9.1e
- * Add + (plus) and - (minus) to command color to select 1 out of 12 preset colors
- * Add + (plus) and - (minus) to command ct to control ColdWarm led ColorTemperature (+34/-34)
- * Tune Arilux RF code
- * Fix possible iram1_0_seg compile error by shrinking ICACHE_RAM_ATTR code
- * Update core_esp8266_wiring_digital.c to latest (staged) level
- * Workaround Sonoff Bridge Learn Mode hang caused by unrecognised RF code (#1181)
- * Fix blank console log window by using XML character encoding (#1187)
+/* 5.12.0c
+ * Fix intermittent exception when dns lookup is used while sleep is enabled
+ * Fix 5.4.0 regression turning off single press after button hold during 4x hold time
+ * Fix possible wifi connection problem by erasing sdk configuration parameters
  *
- * 5.9.1d
- * Add support for Arilux LC11 (Clearing RF home code when selecting no Arilux module)
+ * 5.12.0b
+ * Add serial debug info
+ * Add Multichannel Gas sensor using MultiChannel_Gas_Sensor library (#1245)
+ * Add optional usage of %d or %X suffices in MQTT client to append chipid (#1871)
+ * Add optional usage of %d or %X suffices in MQTT topic to append chipid (#1871)
+ * Add optional usage of %d or %04d in ota url to be replaced with chipid (#1871)
+ * Add Sonoff Bridge command RfKey<x> 5 to show current RF key values either default or learned (#1884)
+ * Add user configurable serial GPIOs to MagicHome and Arilux modules (#1887)
+ * Add Russian language file (#1909)
+ * Add Webserver upload preflight request support (#1927)
+ * Add Home Assistant clear other device (#1931)
+ * Add Restart time to Status 1 (#1938)
+ * Change TSL2561 driver to joba library and delete Adafruit library (#1644)
+ * Change Sonoff SC JSON format (#1939)
+ * Fix compile error when define HOME_ASSISTANT_DISCOVERY_ENABLE is not set (#1937)
+ * Add optional TSL2561 driver using library Joba_Tsl2561 to be enabled in user_config.h with define USE_TSL2561_JOBA (#1951)
+ * Add support for sensor SHTC3 (#1967)
+ *
+ * 5.12.0a
+ * Change platformio option sonoff-ds18x20 to sonoff-xxl enabling ds18x20 and all other sensors in one image
+ * Fix providing web page configuratin option for Friendly Name when no device (relay or light) is configured (#1850)
+ * Change default parameters in user_config.h to undefined for easy installation (#1851)
+ * Change max user configurable hold time from 10 to 25 seconds (#1851)
+ *
+ * 5.12.0 20180209
+ * Change library PubSubClient.h define MQTT_MAX_PACKET_SIZE from 512 to 1000 for Home Assistant  support
+ * Change relation of define MESSZ being dependent on PubSubClient.h define MQTT_MAX_PACKET_SIZE
+ * Change command color parameter input checks to less strict for Home Assistant support
+ * Change command Ina219Mode into command Sensor13
+ * Change commands HlwPCal, HlwUCal and HlwICal to PowerCal, VoltageCal and CurrentCal to be used for both Pow and S31 calibration
+ * Change commands HlwPSet, HlwUSet and HlwISet to PowerSet, VoltageSet and CurrentSet to be used for both Pow and S31 calibration
+ * Change uptime from hour to second resulting in a display of 123T13:45:21 where 123 is days
+ * Change module name Wemos D1 mini into Generic (#1220)
+ * Change HTML from width=100% to style=width:100% supporting HTML5 (#1358)
+ * Change OSWATCH_RESET_TIME (Blocked loop) from 30 to 120 seconds to allow slow networks (#1556)
+ * Change WIFI_MANAGER_SEC into WIFI_CONFIG_SEC (#1616)
+ * Change function pointers code to save code space and memory (#1683)
+ * Change webserver argument processing gaining 5k code space (#1705)
+ * Change weblog memory usage (#1730, #1793, #1819)
+ * Update TasmotaSerial library to 1.1.0
+ * Update language files Italian (#1594), Dutch (#1723) and Spanish (#1722)
+ * Fix Non-English JSON temperature unit attachement
+ * Fix Arilux RF induced exception by moving interrupt handler to iram on non ESP8266/Arduino lib v2.3.0
+ * Fix truncated command names and wrong response for DomoticzSwitchIdx (#1571)
+ * Fix %-sign issue as printf escape character in Humidity and Sonoff SC (#1579)
+ * Fix DS18B20 temperature JSON decimal dot (#1561)
+ * Fix Energy JSON message (#1621)
+ * Fix IRSend parameter translation (#1636)
+ * Fix TSL2561 device detection (#1644, #1825)
+ * Fix BME680 teleperiod resistance measuring (#1647)
+ * Fix Energy Monitoring Energy Today and Energy Total reading after restart (#1648)
+ * Fix IRReceive Data value (#1663)
+ * Fix Energy Monitoring Energy Period roll-over (#1688)
+ * Fix compiler warnings (#1774)
+ * Fix command PWM response if no PWM channel is configured (#1783)
+ * Add locale Decimal Separator to Web sensor page
+ * Add ColorTemperature to light status message
+ * Add command PowerOnState option 5 which inverts PulseTime and allows for delayed always on after power on
+ * Add OtaMagic two step Web server OTA upgrade using filename-minimal image if OTA free space is too small
+ * Add support for PMS5003 and PMS7003 particle concentration sensor
+ * Add command SetOption21 1 to allow Energy Monitoring when power is off on Sonoff Pow and Sonoff S31 (#1420)
+ * Add Chinese language file (#1551)
+ * Add French language file (#1561)
+ * Add Spanish language file (#1589)
+ * Add HTTP Allow Cross Origin removed from ESP8266/Arduino lib v2.4.0 (#1572)
+ * Add Home Assistant MQTT Discovery for switch and light to be enabled by command SetOption19 1 (#1534) or define HOME_ASSISTANT_DISCOVERY_ENABLE in user_config.h (#1685)
+ * Add command State to retrieve device state information (same data as teleperiod state and status 11 in slightly different JSON format)
+ * Add optional login to Webserver AP mode (#1587, #1635)
+ * Add command Sensor15 2 to start MHZ19(B) Zero Point Calibration (#1643)
+ * Add support for Sonoff S31 Smart Socket with Power Consumption Detection (#1626)
+ * Add command SetOption20 to allow update of Dimmer/Color/Ct without turning power on (#1719, #1741)
+ * Add NTP sync time slot based on chip id (#1773)
+ * Add cursor pointer to web button (#1836)
+ *
+ * 5.11.1 20180107
+ * Fix Sonoff Pow command handling (#1542)
+ *
+ * 5.11.0 20180107
+ * Minor webpage HTML optimizations (#1358)
+ * Updated German translation (#1438)
+ * Change Sonoff Pow Energy MQTT data message and consolidate Status 8 into Status 10
+ * Change ADS1115 default voltage range from +/-2V to +/-6V (#1289)
+ * Change text to Active for 3 minutes (#1364)
+ * Change Wemo SetBinaryState to distinguish from GetBinaryState (#1357)
+ * Change output of HTTP command to valid JSON and Array only (#1363)
+ * Removed all MQTT, JSON and Command language defines from locale files and set fixed to English (#1473)
+ * Renamed commands Color2,3,4 to Color3,4,5
+ * Fix BME280 calculation (#1051)
+ * Fix Sonoff Bridge missed learned key if learned data contains 0x55 (End of Transmission) flag (#1095, #1294)
+ * Fix PWM initialization in Dimmer/Color mode (#1321)
+ * Fix Wemo Emulation (#1357)
+ * Fix display of build date and time in non-english locale (#1465)
+ * Fix Wemo and Hue emulation by adding M-Search response delay (#1486)
+ * Add libraries Adafruit_BME680-1.0.5, Adafruit_Sensor-1.0.2.02, TasmotaSerial-1.0.0 and TSL2561-Arduino-Library
+ * Add command Color2 to set color while keeping same dimmer value
+ * Add device function pointers
+ * Add support for SenseAir S8 CO2 sensor
+ * Add color led signal to Carbon Dioxide (CO2) sensors using defines CO2_LOW and CO2_HIGH in user_config.h
+ * Add support for Domoticz Air Quality sensor to be used by MH-Z19(B) and SenseAir sensors
+ * Add support for PZEM004T energy sensor
+ * Add support for iTead SI7021 temperature and humidity sensor by consolidating DHT22 into AM2301 and using former DHT22 as SI7021 (#735)
+ * Add support for BME680 using adafruit libraries (#1212)
+ * Add support for MH-Z19(B) CO2 sensor (#561, #1248)
+ * Add multipress support and more user configurable GPIO to Sonoff Dual R2 (#1291)
+ * Add support for TSL2561 using adafruit library (#661, #1311)
+ * Add support for SHT3x (#1314)
+ * Add support for Arilux LC06 (#1414)
+ * Add Italian language file (#1449)
+ * Add 2nd Gen Alexa support to Wemo emulation discovery (#1357, #1450)
+ * Add define for additional number of WS2812 schemes (#1463)
+ *
+ * 5.10.0 20171201
+ * Upgrade library ArduinoJson to 5.11.2
+ * Upgrade library IRRemoteEsp8266 to 2.2.1 + 2 commits but disabled some protocols (code size reduction)
+ * Upgrade library NeoPixelBus to 2.2.9
+ * Upgrade library OneWire to 2.3.3 + 6 commits and disabled CRC lookup-table (#define ONEWIRE_CRC8_TABLE 0) (code size reduction)
+ * Update library PubSubClient to 2.6 + 9 commits and additional delay (#790)
+ * Update core_esp8266_wiring_digital.c to latest (staged) level
+ * Patch library I2Cdevlib-Core for esp8266-core 2.4.0-rc2 compatibility
+ * Remove command EnergyReset 1..3 now replaced by EnergyReset1 to EnergyReset3
+ * Remove spaces in JSON messages (code size reduction)
+ * Renamed xsns_05_ds18x20.ino to xsns_05_ds18x20_legacy.ino still using library OneWire and providing dynamic sensor scan
+ * Fix possible iram1_0_seg compile error by shrinking ICACHE_RAM_ATTR code usage
+ * Fix PWM watchdog timeout if Dimmer is set to 100 or Color set to 0xFF (#1146)
+ * Fix Sonoff Bridge Learn Mode hang caused by unrecognised RF code (#1181)
+ * Fix blank console log window by using XML character encoding (#1187)
+ * Fix wrong response name for command HlwISet (#1214)
+ * Fix DHT type sensor timeout recognition by distinguish "signal already there" from "timeout" (#1233)
  * Add fixed color options 1..12 to command Color
  * Add + (plus) and - (minus) to commands Dimmer (+10/-10), Speed and Scheme
- *
- * 5.9.1c
- * Add support for WS2812 RGBW ledstrips to be enabled in user_config.h with define USE_WS2812_CTYPE (#1156)
- *
- * 5.9.1b
- * Remove spaces in JSON messages
+ * Add + (plus) and - (minus) to command Color to select 1 out of 12 preset colors
+ * Add + (plus) and - (minus) to command Ct to control ColdWarm led ColorTemperature (+34/-34)
+ * Add commands EnergyReset1 0..42500, EnergyReset2 0..42500 and EnergyReset3 0..42500000
+ *  to (Re)set Energy Today, Yesterday or Total respectively in Wh (#406, #685, #1202)
+ * Add optional ADS1115 driver as alternative for unsupported I2Cdevlib in esp8266-core 2.4.0-rc2
  * Add support for INA219 Voltage and Current sensor to be enabled in user_config.h with define USE_INA219
- *
- * 5.9.1a
- * Fix PWM watchdog timeout if Dimmer is set to 100 or Color set to 0xFF (#1146)
+ * Add support for Arilux LC11 (Clearing RF home code when selecting no Arilux module)
+ * Add support for WS2812 RGBW ledstrips to be enabled in user_config.h with define USE_WS2812_CTYPE (#1156)
+ * Add SettingsSaveAll routine to command SaveData to be used before controlled power down (#1202)
+ * Add option PUSHBUTTON_TOGGLE (SwitchMode 7) to allow toggling on any switch change (#1221)
+ * Add new xdrv_05_ds18x20.ino free from library OneWire and add the following features:
+ *  Add support for DS1822
+ *  Add forced setting of 12-bit resolution for selected device types (#1222)
+ *  Add read temperature retry counter (#1215)
+ *  Fix lost sensors by performing sensor probe at restart only thereby removing dynamic sensor probe (#1215)
+ *  Fix sensor address sorting using ascending sort on sensor type followed by sensor address
+ *  Rewrite JSON resulting in shorter message allowing more sensors in default firmware image:
+ *   "DS18B20-1":{"Id":"00000483C23A","Temperature":19.5},"DS18B20-2":{"Id":"0000048EC44C","Temperature":19.6}
+ * Add additional define in user_config.h to select either single sensor (defines disabled), new multi sensor (USE_DS18X20) or legacy multi sensor (USE_DS18X20_LEGACY)
+ * Add clock support for more different pixel counts (#1226)
+ * Add support for Sonoff Dual R2 (#1249)
+ * Add FriendlyName to web page tab and add program information to web page footer (#1275)
  *
  * 5.9.1 20171107
  * Add external sensor function pointer interface to enable easy sensor addition

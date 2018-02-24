@@ -1,3 +1,9 @@
+﻿## OS specific ########
+.DS_Store
+.fuse_hidden*
+
+
+## Project files ######
 .pioenvs
 .piolibdeps
 .clang_complete
@@ -10,3 +16,5 @@
 libraries/
 credentials.h
 
+.vscode
+sonoff/user_config_override.h

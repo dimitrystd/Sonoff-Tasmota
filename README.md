@@ -11,7 +11,7 @@ The first command will restart module, so wait for additional 10s before run the
 ## Sonoff-Tasmota
 Provide ESP8266 based Sonoff by [iTead Studio](https://www.itead.cc/) and ElectroDragon IoT Relay with Serial, Web and MQTT control allowing 'Over the Air' or OTA firmware updates using Arduino IDE.
 
-Current version is **5.9.1e** - See [sonoff/_releasenotes.ino](https://github.com/arendst/Sonoff-Tasmota/blob/development/sonoff/_releasenotes.ino) for change information.
+Current version is **5.12.0c** - See [sonoff/_releasenotes.ino](https://github.com/arendst/Sonoff-Tasmota/blob/development/sonoff/_releasenotes.ino) for change information.
 
 ### ATTENTION All versions
 
@@ -47,13 +47,15 @@ The following devices are supported:
 - [iTead Sonoff RF](https://www.itead.cc/smart-home/sonoff-rf.html)
 - [iTead Sonoff SV](https://www.itead.cc/smart-home/sonoff-sv.html)<img src="https://github.com/arendst/arendst.github.io/blob/master/media/sonoff_th.jpg" width="250" align="right" />
 - [iTead Sonoff TH10/TH16 with temperature sensor](https://www.itead.cc/smart-home/sonoff-th.html)
-- [iTead Sonoff Dual](https://www.itead.cc/smart-home/sonoff-dual.html)
+- [iTead Sonoff Dual (R2)](https://www.itead.cc/smart-home/sonoff-dual.html)
 - [iTead Sonoff Pow](https://www.itead.cc/smart-home/sonoff-pow.html)
 - [iTead Sonoff 4CH](https://www.itead.cc/smart-home/sonoff-4ch.html)
 - [iTead Sonoff 4CH Pro](https://www.itead.cc/smart-home/sonoff-4ch-pro.html)
 - [iTead S20 Smart Socket](https://www.itead.cc/smart-socket.html)
+- [Sonoff S22 Smart Socket](https://github.com/arendst/Sonoff-Tasmota/issues/627)
+- [iTead Sonoff S31 Smart Socket with Energy Monitoring](https://www.itead.cc/sonoff-s31.html)
 - [iTead Slampher](https://www.itead.cc/slampher.html)
-- [iTead Sonoff Touch](https://www.itead.cc/sonoff-touch-eu-local.html)
+- [iTead Sonoff Touch](https://www.itead.cc/sonoff-touch.html)
 - [iTead Sonoff T1](https://www.itead.cc/sonoff-t1.html)
 - [iTead Sonoff SC](https://www.itead.cc/sonoff-sc.html)
 - [iTead Sonoff Led](https://www.itead.cc/sonoff-led.html)<img src="https://github.com/arendst/arendst.github.io/blob/master/media/sonoff4ch.jpg" height="250" align="right" />
@@ -64,8 +66,13 @@ The following devices are supported:
 - [iTead 1 Channel Switch 5V / 12V](https://www.itead.cc/smart-home/inching-self-locking-wifi-wireless-switch.html)
 - [iTead Motor Clockwise/Anticlockwise](https://www.itead.cc/smart-home/motor-reversing-wifi-wireless-switch.html)
 - [Electrodragon IoT Relay Board](http://www.electrodragon.com/product/wifi-iot-relay-board-based-esp8266/)
-- [AI Light or any my9291 compatible RGBW LED](http://www.ebay.com/itm/172644855726)
-
+- AI Light or any my9291 compatible RGBW LED bulb
+- H801 PWM LED controller
+- [MagicHome PWM LED controller](https://github.com/arendst/Sonoff-Tasmota/wiki/MagicHome-LED-strip-controller)
+- AriLux AL-LC01, AL-LC06 and AL-LC11 PWM LED controller
+- [Supla device - Espablo-inCan mod. for electrical Installation box](https://forum.supla.org/viewtopic.php?f=33&t=2188)
+- [Luani HVIO board](https://luani.de/projekte/esp8266-hvio/)
+- Wemos D1 mini, NodeMcu and Ledunia
 
 ### License
 
