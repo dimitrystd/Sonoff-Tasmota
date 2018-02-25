@@ -88,8 +88,14 @@
 #undef TELE_PERIOD
 #define TELE_PERIOD          120               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
 
+// -- MQTT - Domoticz -----------------------------
 #ifdef USE_DOMOTICZ
     #undef USE_DOMOTICZ
+#endif
+
+// -- MQTT - Home Assistant Discovery -------------
+#ifdef USE_HOME_ASSISTANT
+    #undef USE_HOME_ASSISTANT
 #endif
 
 #ifdef FRIENDLY_NAME
