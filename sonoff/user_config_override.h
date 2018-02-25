@@ -36,6 +36,7 @@
 //#endif
 //#define CFG_HOLDER             0x20161210
 
+// -- Wifi ----------------------------------------
 #undef STA_SSID1
 #undef STA_PASS1
 #undef STA_SSID2
@@ -56,16 +57,19 @@
 #undef MODULE
 #define MODULE                 H801
 
+// -- Syslog --------------------------------------
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
 #endif
 #define SERIAL_LOG_LEVEL       LOG_LEVEL_NONE
 
+// -- Ota -----------------------------------------
 #ifdef OTA_URL
     #undef OTA_URL
 #endif
 #define OTA_URL                "http://dms-ota-firmware.s3.amazonaws.com/sonoff-tasmota/" PROJECT ".ino.bin"  // [OtaUrl]
 
+// -- MQTT ----------------------------------------
 #ifdef MQTT_USE
     #undef MQTT_HOST
     #undef MQTT_PORT
@@ -80,6 +84,7 @@
     #define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 #endif
 
+// -- MQTT - Telemetry ----------------------------
 #undef TELE_PERIOD
 #define TELE_PERIOD          120               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
 
@@ -92,6 +97,7 @@
     #define FRIENDLY_NAME        "smart-home-us - " PROJECT // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
 #endif
 
+// -- mDNS ----------------------------------------
 #ifdef USE_DISCOVERY
     #undef USE_DISCOVERY
 #endif
@@ -110,6 +116,7 @@
 // second Sunday in March and ends on the first Sunday in November, with the time changes taking place at 2:00 a.m. local time
 #define TIME_DST               Second, Sun, Mar, 2, +120  // Last sunday in march at 02:00 +120 minutes
 #define TIME_STD               First, Sun, Nov, 2, +60   // Last sunday in october 02:00 +60 minutes
+// -- Application ---------------------------------
 #define APP_TIMEZONE           -5                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
 #define APP_LEDSTATE           LED_POWER_MQTT
 
@@ -117,20 +124,47 @@
     #undef WS2812_LEDS
 #endif
 
+// -- One wire sensors ----------------------------
 #ifdef USE_DS18x20
     #undef USE_DS18x20
 #endif
 
+// -- I2C sensors ---------------------------------
 #ifdef USE_I2C
     #undef USE_I2C
 #endif
 
+// -- Serial sensors ------------------------------
+#ifdef USE_MHZ19
+    #undef USE_MHZ19
+#endif
+#ifdef USE_SENSEAIR
+    #undef USE_SENSEAIR
+#endif
+#ifdef USE_PMS5003
+    #undef USE_PMS5003
+#endif
+#ifdef USE_PZEM004T
+    #undef USE_PZEM004T
+#endif
+
+// -- Low level interface devices -----------------
 #ifdef USE_IR_REMOTE
     #undef USE_IR_REMOTE
+#endif
+#ifdef USE_IR_HVAC
+    #undef USE_IR_HVAC
+#endif
+#ifdef USE_IR_RECEIVE
+    #undef USE_IR_RECEIVE
 #endif
 
 #ifdef USE_WS2812
     #undef USE_WS2812
+#endif
+
+#ifdef USE_ARILUX_RF
+    #undef USE_ARILUX_RF
 #endif
 
 #endif  // _USER_CONFIG_OVERRIDE_H_
