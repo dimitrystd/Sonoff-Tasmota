@@ -55,7 +55,7 @@
 #undef PROJECT
 #define PROJECT                "sf_playroom"
 #undef MODULE
-#define MODULE                 SONOFF_BASIC
+#define MODULE                 SONOFF_S31
 
 // -- Syslog --------------------------------------
 #ifdef SERIAL_LOG_LEVEL
@@ -144,8 +144,9 @@
 #ifdef USE_PMS5003
     #undef USE_PMS5003
 #endif
-#ifdef USE_PZEM004T
-    #undef USE_PZEM004T
+
+#ifndef USE_PZEM004T
+    #define USE_PZEM004T
 #endif
 
 // -- Low level interface devices -----------------
