@@ -1,7 +1,7 @@
 /*
-  xsns_dht.ino - DHTxx and AM23xx temperature and humidity sensor support for Sonoff-Tasmota
+  xsns_06_dht.ino - DHTxx, AM23xx and SI7021 temperature and humidity sensor support for Sonoff-Tasmota
 
-  Copyright (C) 2017  Theo Arends
+  Copyright (C) 2018  Theo Arends
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 
 #ifdef USE_DHT
 /*********************************************************************************************\
- * DHT11, DHT21 (AM2301), DHT22 (AM2302, AM2321) - Temperature and Humidy
+ * DHT11, AM2301 (DHT21, DHT22, AM2302, AM2321), SI7021 - Temperature and Humidy
  *
  * Reading temperature or humidity takes about 250 milliseconds!
  * Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
@@ -37,11 +37,11 @@ byte dht_sensors = 0;
 struct DHTSTRUCT {
   byte     pin;
   byte     type;
-  char     stype[10];
+  char     stype[12];
   uint32_t lastreadtime;
   uint8_t  lastresult;
-  float    t;
-  float    h = 0;
+  float    t = NAN;
+  float    h = NAN;
 } Dht[DHT_MAX_SENSORS];
 
 void DhtReadPrep()
@@ -51,13 +51,13 @@ void DhtReadPrep()
   }
 }
 
-uint32_t DhtExpectPulse(byte sensor, bool level)
+int32_t DhtExpectPulse(byte sensor, bool level)
 {
-  uint32_t count = 0;
+  int32_t count = 0;
 
   while (digitalRead(Dht[sensor].pin) == level) {
-    if (count++ >= dht_max_cycles) {
-      return 0;
+    if (count++ >= (int32_t)dht_max_cycles) {
+      return -1;  // Timeout
     }
   }
   return count;
@@ -65,7 +65,7 @@ uint32_t DhtExpectPulse(byte sensor, bool level)
 
 void DhtRead(byte sensor)
 {
-  uint32_t cycles[80];
+  int32_t cycles[80];
   uint32_t currenttime = millis();
 
   if ((currenttime - Dht[sensor].lastreadtime) < MIN_INTERVAL) {
@@ -85,19 +85,24 @@ void DhtRead(byte sensor)
   }
   pinMode(Dht[sensor].pin, OUTPUT);
   digitalWrite(Dht[sensor].pin, LOW);
-  delay(20);
+
+  if (GPIO_SI7021 == Dht[sensor].type) {
+    delayMicroseconds(500);
+  } else {
+    delay(20);
+  }
 
   noInterrupts();
   digitalWrite(Dht[sensor].pin, HIGH);
   delayMicroseconds(40);
   pinMode(Dht[sensor].pin, INPUT_PULLUP);
   delayMicroseconds(10);
-  if (0 == DhtExpectPulse(sensor, LOW)) {
+  if (-1 == DhtExpectPulse(sensor, LOW)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_LOW " " D_PULSE));
     Dht[sensor].lastresult++;
     return;
   }
-  if (0 == DhtExpectPulse(sensor, HIGH)) {
+  if (-1 == DhtExpectPulse(sensor, HIGH)) {
     AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_START_SIGNAL_HIGH " " D_PULSE));
     Dht[sensor].lastresult++;
     return;
@@ -108,17 +113,17 @@ void DhtRead(byte sensor)
   }
   interrupts();
 
-  for (int i=0; i<40; ++i) {
-    uint32_t lowCycles  = cycles[2*i];
-    uint32_t highCycles = cycles[2*i+1];
-    if ((0 == lowCycles) || (0 == highCycles)) {
+  for (int i = 0; i < 40; ++i) {
+    int32_t lowCycles  = cycles[2*i];
+    int32_t highCycles = cycles[2*i+1];
+    if ((-1 == lowCycles) || (-1 == highCycles)) {
       AddLog_P(LOG_LEVEL_DEBUG, PSTR(D_LOG_DHT D_TIMEOUT_WAITING_FOR " " D_PULSE));
       Dht[sensor].lastresult++;
       return;
     }
     dht_data[i/8] <<= 1;
     if (highCycles > lowCycles) {
-      dht_data[i/8] |= 1;
+      dht_data[i / 8] |= 1;
     }
   }
 
@@ -136,7 +141,7 @@ void DhtRead(byte sensor)
 
 boolean DhtReadTempHum(byte sensor, float &t, float &h)
 {
-  if (!Dht[sensor].h) {
+  if (NAN == Dht[sensor].h) {
     t = NAN;
     h = NAN;
   } else {
@@ -153,24 +158,18 @@ boolean DhtReadTempHum(byte sensor, float &t, float &h)
     switch (Dht[sensor].type) {
     case GPIO_DHT11:
       h = dht_data[0];
-      t = ConvertTemp(dht_data[2]);
+      t = dht_data[2];
       break;
     case GPIO_DHT22:
-    case GPIO_DHT21:
-      h = dht_data[0];
-      h *= 256;
-      h += dht_data[1];
-      h *= 0.1;
-      t = dht_data[2] & 0x7F;
-      t *= 256;
-      t += dht_data[3];
-      t *= 0.1;
+    case GPIO_SI7021:
+      h = ((dht_data[0] << 8) | dht_data[1]) * 0.1;
+      t = (((dht_data[2] & 0x7F) << 8 ) | dht_data[3]) * 0.1;
       if (dht_data[2] & 0x80) {
         t *= -1;
       }
-      t = ConvertTemp(t);
       break;
     }
+    t = ConvertTemp(t);
     if (!isnan(t)) {
       Dht[sensor].t = t;
     }
@@ -204,16 +203,7 @@ void DhtInit()
     pinMode(Dht[i].pin, INPUT_PULLUP);
     Dht[i].lastreadtime = 0;
     Dht[i].lastresult = 0;
-    switch (Dht[i].type) {
-    case GPIO_DHT11:
-      strcpy_P(Dht[i].stype, PSTR("DHT11"));
-      break;
-    case GPIO_DHT21:
-      strcpy_P(Dht[i].stype, PSTR("AM2301"));
-      break;
-    case GPIO_DHT22:
-      strcpy_P(Dht[i].stype, PSTR("DHT22"));
-    }
+    GetTextIndexed(Dht[i].stype, sizeof(Dht[i].stype), Dht[i].type, kSensorNames);
     if (dht_sensors > 1) {
       snprintf_P(Dht[i].stype, sizeof(Dht[i].stype), PSTR("%s-%02d"), Dht[i].stype, Dht[i].pin);
     }
@@ -224,14 +214,14 @@ void DhtShow(boolean json)
 {
   char temperature[10];
   char humidity[10];
-  float t;
-  float h;
 
   byte dsxflg = 0;
   for (byte i = 0; i < dht_sensors; i++) {
+    float t = NAN;
+    float h = NAN;
     if (DhtReadTempHum(i, t, h)) {     // Read temperature
-      dtostrfd(t, Settings.flag.temperature_resolution, temperature);
-      dtostrfd(h, Settings.flag.humidity_resolution, humidity);
+      dtostrfd(t, Settings.flag2.temperature_resolution, temperature);
+      dtostrfd(h, Settings.flag2.humidity_resolution, humidity);
 
       if (json) {
         snprintf_P(mqtt_data, sizeof(mqtt_data), JSON_SNS_TEMPHUM, mqtt_data, Dht[i].stype, temperature, humidity);
@@ -263,17 +253,17 @@ boolean Xsns06(byte function)
 
   if (dht_flg) {
     switch (function) {
-      case FUNC_XSNS_INIT:
+      case FUNC_INIT:
         DhtInit();
         break;
-      case FUNC_XSNS_PREP:
+      case FUNC_PREP_BEFORE_TELEPERIOD:
         DhtReadPrep();
         break;
-      case FUNC_XSNS_JSON:
+      case FUNC_JSON_APPEND:
         DhtShow(1);
         break;
 #ifdef USE_WEBSERVER
-      case FUNC_XSNS_WEB:
+      case FUNC_WEB_APPEND:
         DhtShow(0);
         break;
 #endif  // USE_WEBSERVER
