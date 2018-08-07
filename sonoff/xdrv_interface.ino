@@ -139,12 +139,14 @@ boolean (* const xdrv_func_ptr[])(byte) PROGMEM = {   // Driver Function Pointer
 
 const uint8_t xdrv_present = sizeof(xdrv_func_ptr) / sizeof(xdrv_func_ptr[0]);  // Number of drivers found
 
-boolean XdrvCommand(char *type, uint16_t index, char *dataBuf, uint16_t data_len, int16_t payload)
+boolean XdrvCommand(uint8_t grpflg, char *type, uint16_t index, char *dataBuf, uint16_t data_len, int16_t payload, uint16_t payload16)
 {
 //  XdrvMailbox.valid = 1;
   XdrvMailbox.index = index;
   XdrvMailbox.data_len = data_len;
+  XdrvMailbox.payload16 = payload16;
   XdrvMailbox.payload = payload;
+  XdrvMailbox.grpflg = grpflg;
   XdrvMailbox.topic = type;
   XdrvMailbox.data = dataBuf;
 
@@ -169,10 +171,25 @@ boolean XdrvMqttData(char *topicBuf, uint16_t stopicBuf, char *dataBuf, uint16_t
   return XdrvCall(FUNC_MQTT_DATA);
 }
 
+boolean XdrvRulesProcess()
+{
+  return XdrvCall(FUNC_RULES_PROCESS);
+}
+
+void ShowFreeMem(const char *where)
+{
+  char stemp[20];
+  snprintf_P(stemp, sizeof(stemp), where);
+  XdrvMailbox.data = stemp;
+  XdrvCall(FUNC_FREE_MEM);
+}
+
 /*********************************************************************************************\
  * Function call to all xdrv
  *
+ * FUNC_PRE_INIT
  * FUNC_INIT
+ * FUNC_LOOP
  * FUNC_MQTT_SUBSCRIBE
  * FUNC_MQTT_INIT
  * return FUNC_MQTT_DATA
@@ -181,6 +198,8 @@ boolean XdrvMqttData(char *topicBuf, uint16_t stopicBuf, char *dataBuf, uint16_t
  * FUNC_SHOW_SENSOR
  * FUNC_EVERY_SECOND
  * FUNC_EVERY_50_MSECOND
+ * FUNC_RULES_PROCESS
+ * FUNC_FREE_MEM
 \*********************************************************************************************/
 
 boolean XdrvCall(byte Function)
@@ -189,9 +208,7 @@ boolean XdrvCall(byte Function)
 
   for (byte x = 0; x < xdrv_present; x++) {
     result = xdrv_func_ptr[x](Function);
-    if (result) {
-      break;
-    }
+    if (result) break;
   }
 
   return result;

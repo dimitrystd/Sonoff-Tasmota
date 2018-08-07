@@ -17,7 +17,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifdef USE_EMULATION
+#if defined(USE_WEBSERVER) && defined(USE_EMULATION)
 /*********************************************************************************************\
  * Belkin WeMo and Philips Hue bridge emulation
 \*********************************************************************************************/
@@ -266,7 +266,6 @@ void PollUdp()
   }
 }
 
-#ifdef USE_WEBSERVER
 /*********************************************************************************************\
  * Wemo web server additions
 \*********************************************************************************************/
@@ -388,10 +387,10 @@ void HandleUpnpEvent()
   //differentiate get and set state
   if (request.indexOf(F("SetBinaryState")) > 0) {
     if (request.indexOf(F("State>1</Binary")) > 0) {
-      ExecuteCommandPower(devices_present, POWER_ON);
+      ExecuteCommandPower(devices_present, POWER_ON, SRC_WEMO);
     }
     else if (request.indexOf(F("State>0</Binary")) > 0) {
-      ExecuteCommandPower(devices_present, POWER_OFF);
+      ExecuteCommandPower(devices_present, POWER_OFF, SRC_WEMO);
     }
   }
   else if(request.indexOf(F("GetBinaryState")) > 0){
@@ -490,7 +489,7 @@ const char HueConfigResponse_JSON[] PROGMEM =
      "\"last use date\":\"{dt\","
      "\"create date\":\"{dt\","
      "\"name\":\"Remote\"}},"
-   "\"swversion\":\"01039019\","
+   "\"swversion\":\"01041302\","
    "\"apiversion\":\"1.17.0\","
    "\"swupdate\":{\"updatestate\":0,\"url\":\"\",\"text\":\"\",\"notify\": false},"
    "\"linkbutton\":false,"
@@ -661,10 +660,10 @@ void HueLights(String *path)
         on = hue_json["on"];
         switch(on)
         {
-          case false : ExecuteCommandPower(device, POWER_OFF);
+          case false : ExecuteCommandPower(device, POWER_OFF, SRC_HUE);
                        response.replace("{re", "false");
                        break;
-          case true  : ExecuteCommandPower(device, POWER_ON);
+          case true  : ExecuteCommandPower(device, POWER_ON, SRC_HUE);
                        response.replace("{re", "true");
                        break;
           default    : response.replace("{re", (power & (1 << (device-1))) ? "true" : "false");
@@ -814,6 +813,4 @@ void HandleHueApi(String *path)
   else if (path->endsWith("/rules")) HueNotImplemented(path);
   else HueGlobalConfig(path);
 }
-#endif  // USE_WEBSERVER
-#endif  // USE_EMULATION
-
+#endif  // USE_WEBSERVER && USE_EMULATION
