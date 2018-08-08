@@ -41,7 +41,7 @@
 
 // -- Project -------------------------------------
 #undef PROJECT
-#define PROJECT                "h801_kitchen"
+#define PROJECT                "h801_bathroom"
 #undef MODULE
 #define MODULE                 H801
 
@@ -85,7 +85,7 @@
 
 // -- MQTT topics ---------------------------------
 #undef MQTT_GRPTOPIC
-#define MQTT_GRPTOPIC          "kitchen"         // [GroupTopic] MQTT Group topic
+#define MQTT_GRPTOPIC          "bathroom"          // [GroupTopic] MQTT Group topic
 #undef MQTT_CLIENT_ID
 #define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 
