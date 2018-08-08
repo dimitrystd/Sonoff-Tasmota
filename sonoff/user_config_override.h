@@ -30,11 +30,20 @@
  *            - So I see no use in this but anyway, your on your own.
 \*****************************************************************************************************/
 
-// Examples
-//#ifdef CFG_HOLDER
-//#undef CFG_HOLDER
-//#endif
-//#define CFG_HOLDER             0x20161210
+/*********************************************************************************************\
+ * SECTION 1
+ * - After initial load any change here only take effect if CFG_HOLDER is changed too
+\*********************************************************************************************/
+
+// -- Master parameter control --------------------
+#undef  CFG_HOLDER
+#define CFG_HOLDER        4618                   // [Reset 1] Change this value to load SECTION1 configuration parameters to flash
+
+// -- Project -------------------------------------
+#undef PROJECT
+#define PROJECT                "h801_kitchen"
+#undef MODULE
+#define MODULE                 H801
 
 // -- Wifi ----------------------------------------
 #undef STA_SSID1
@@ -52,41 +61,76 @@
 #endif
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
-#undef PROJECT
-#define PROJECT                "h801_kitchen"
-#undef MODULE
-#define MODULE                 H801
-
 // -- Syslog --------------------------------------
 #ifdef SERIAL_LOG_LEVEL
     #undef SERIAL_LOG_LEVEL
 #endif
-#define SERIAL_LOG_LEVEL       LOG_LEVEL_NONE
+#define SERIAL_LOG_LEVEL       LOG_LEVEL_NONE   // [SerialLog] (LOG_LEVEL_NONE, LOG_LEVEL_ERROR, LOG_LEVEL_INFO, LOG_LEVEL_DEBUG, LOG_LEVEL_DEBUG_MORE)
 
 // -- Ota -----------------------------------------
 #ifdef OTA_URL
     #undef OTA_URL
 #endif
-#define OTA_URL                "http://dms-ota-firmware.s3.amazonaws.com/sonoff-tasmota/" PROJECT ".ino.bin"  // [OtaUrl]
+#define OTA_URL                "http://dms-ota-firmware.s3.amazonaws.com/sonoff-tasmota/" PROJECT ".bin"  // [OtaUrl]
 
 // -- MQTT ----------------------------------------
-#ifdef MQTT_USE
-    #undef MQTT_HOST
-    #undef MQTT_PORT
-    #undef MQTT_USER
-    #undef MQTT_PASS
-    #undef MQTT_CLIENT_ID
+#undef MQTT_HOST
+#define MQTT_HOST            "192.168.1.2" // [MqttHost]
+#undef MQTT_PORT
+#define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
+#undef MQTT_USER
+#define MQTT_USER            ""       // [MqttUser] Optional user
+#undef MQTT_PASS
+#define MQTT_PASS            ""       // [MqttPassword] Optional password
 
-    #define MQTT_HOST            "192.168.1.2" // [MqttHost]
-    #define MQTT_PORT            1883          // [MqttPort] MQTT port (10123 on CloudMQTT)
-    #define MQTT_USER            ""       // [MqttUser] Optional user
-    #define MQTT_PASS            ""       // [MqttPassword] Optional password
-    #define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
-#endif
+// -- MQTT topics ---------------------------------
+#undef MQTT_GRPTOPIC
+#define MQTT_GRPTOPIC          "kitchen"         // [GroupTopic] MQTT Group topic
+#undef MQTT_CLIENT_ID
+#define MQTT_CLIENT_ID       PROJECT "_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 
 // -- MQTT - Telemetry ----------------------------
 #undef TELE_PERIOD
 #define TELE_PERIOD          120               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
+
+// -- HTTP ----------------------------------------
+#ifdef FRIENDLY_NAME
+    #undef FRIENDLY_NAME
+    #define FRIENDLY_NAME        "smart-home-us - " PROJECT // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
+#endif
+
+// -- Time - Up to three NTP servers in your region
+#undef NTP_SERVER1
+#undef NTP_SERVER2
+#undef NTP_SERVER3
+#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address
+#define NTP_SERVER2            "time.nist.gov"    // [NtpServer2] Select second NTP server by name or IP address
+#define NTP_SERVER3            "time-a.nist.gov"  // [NtpServer3] Select third NTP server by name or IP address
+
+// -- Time - Start Daylight Saving Time and timezone offset from UTC in minutes
+#undef TIME_DST
+#undef TIME_STD
+#define TIME_DST               Second, Sun, Mar, 2, +120  // Last sunday in march at 02:00 +120 minutes
+// second Sunday in March and ends on the first Sunday in November, with the time changes taking place at 2:00 a.m. local time
+#define TIME_STD               First, Sun, Nov, 2, +60   // Last sunday in october 02:00 +60 minutes
+
+// -- Location ------------------------------------
+#define LATITUDE               40.835808         // [Latitude] Your location to be used with sunrise and sunset
+#define LONGITUDE              -73.972971        // [Longitude] Your location to be used with sunrise and sunset
+
+// -- Application ---------------------------------
+#undef APP_TIMEZONE
+#undef APP_LEDSTATE
+#define APP_TIMEZONE           -5                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
+#define APP_LEDSTATE           LED_POWER_MQTT
+
+/*********************************************************************************************\
+ * END OF SECTION 1
+ *
+ * SECTION 2
+ * - Enable a feature by removing both // in front of it
+ * - Disable a feature by preceding it with //
+\*********************************************************************************************/
 
 // -- MQTT - Domoticz -----------------------------
 #ifdef USE_DOMOTICZ
@@ -98,33 +142,20 @@
     #undef USE_HOME_ASSISTANT
 #endif
 
-#ifdef FRIENDLY_NAME
-    #undef FRIENDLY_NAME
-    #define FRIENDLY_NAME        "smart-home-us - " PROJECT // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
-#endif
-
 // -- mDNS ----------------------------------------
 #ifdef USE_DISCOVERY
     #undef USE_DISCOVERY
 #endif
 
-#undef NTP_SERVER1
-#undef NTP_SERVER2
-#undef NTP_SERVER3
-#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address
-#define NTP_SERVER2            "time.nist.gov"    // [NtpServer2] Select second NTP server by name or IP address
-#define NTP_SERVER3            "time-a.nist.gov"  // [NtpServer3] Select third NTP server by name or IP address
+// -- Time ----------------------------------------
+#ifdef USE_TIMERS                               // Add support for up to 16 timers (+2k2 code)
+    #undef USE_TIMERS
+#endif
 
-#undef TIME_DST
-#undef TIME_STD
-#undef APP_TIMEZONE
-#undef APP_LEDSTATE
-// second Sunday in March and ends on the first Sunday in November, with the time changes taking place at 2:00 a.m. local time
-#define TIME_DST               Second, Sun, Mar, 2, +120  // Last sunday in march at 02:00 +120 minutes
-#define TIME_STD               First, Sun, Nov, 2, +60   // Last sunday in october 02:00 +60 minutes
-// -- Application ---------------------------------
-#define APP_TIMEZONE           -5                 // [Timezone] +1 hour (Amsterdam) (-12 .. 12 = hours from UTC, 99 = use TIME_DST/TIME_STD)
-#define APP_LEDSTATE           LED_POWER_MQTT
+// -- Rules ---------------------------------------
+#ifdef USE_RULES                               // Add support for rules (+4k4 code)
+    #undef USE_RULES
+#endif
 
 #ifdef WS2812_LEDS
     #undef WS2812_LEDS
@@ -150,8 +181,20 @@
 #ifdef USE_PMS5003
     #undef USE_PMS5003
 #endif
+#ifdef USE_NOVA_SDS
+    #undef USE_NOVA_SDS
+#endif
 #ifdef USE_PZEM004T
     #undef USE_PZEM004T
+#endif
+#ifdef USE_SERIAL_BRIDGE
+    #undef USE_SERIAL_BRIDGE
+#endif
+#ifdef USE_SDM120
+    #undef USE_SDM120
+#endif
+#ifdef USE_SDM630
+    #undef USE_SDM630
 #endif
 
 // -- Low level interface devices -----------------
@@ -171,6 +214,18 @@
 
 #ifdef USE_ARILUX_RF
     #undef USE_ARILUX_RF
+#endif
+
+#ifdef USE_SR04
+    #undef USE_SR04
+#endif
+
+#ifdef USE_TM1638
+    #undef USE_TM1638
+#endif
+
+#ifdef USE_RF_FLASH
+    #undef USE_RF_FLASH
 #endif
 
 #endif  // _USER_CONFIG_OVERRIDE_H_
