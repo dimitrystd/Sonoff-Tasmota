@@ -5,6 +5,7 @@ Before start to use H801 module you must run in console
 SetOption15 on
 speed 3
 fade on
+Color 12
 ```
 The first command will restart module, so wait for additional 10s before run the second command.
 
