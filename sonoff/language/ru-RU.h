@@ -28,9 +28,14 @@
  * Use online command StateText to translate ON, OFF, HOLD and TOGGLE.
  * Use online command Prefix to translate cmnd, stat and tele.
  *
+ * Updated until v5.12.0b
 \*********************************************************************/
 
 //#define LANGUAGE_MODULE_NAME         // Enable to display "Module Generic" (ie Spanish), Disable to display "Generic Module" (ie English)
+
+#define LANGUAGE_LCID 1049
+// HTML (ISO 639-1) Language Code
+#define D_HTML_LANGUAGE "ru"
 
 // "2017-03-07T11:08:02" - ISO8601:2004
 #define D_YEAR_MONTH_SEPARATOR "-"
@@ -55,10 +60,12 @@
 #define D_BLINKOFF "Не Мигать"
 #define D_BOOT_COUNT "Количество загрузок"
 #define D_BRIGHTLIGHT "Яркость"
+#define D_BSSID "BSSId"
 #define D_BUTTON "Кнопка"
 #define D_BY "by"                    // Written by me
 #define D_BYTES "Байт"
 #define D_CELSIUS "Цельсия"
+#define D_CHANNEL "Channel"
 #define D_CO2 "Углекислый газ"
 #define D_CODE "код"                // Button code
 #define D_COLDLIGHT "Холодный"
@@ -71,9 +78,11 @@
 #define D_DARKLIGHT "Темный"
 #define D_DEBUG "Отладка"
 #define D_DISABLED "Блокирован"
+#define D_DISTANCE "Distance"
 #define D_DNS_SERVER "DNS Сервер"
 #define D_DONE "Выполнено"
 #define D_DST_TIME "DST"
+#define D_ECO2 "eCO2"
 #define D_EMULATION "Эмуляция"
 #define D_ENABLED "Активно"
 #define D_ERASE "Стирать"
@@ -85,6 +94,7 @@
 #define D_FALSE "Ложно"
 #define D_FILE "Файл"
 #define D_FREE_MEMORY "Свободная память"
+#define D_FREQUENCY "Frequency"
 #define D_GAS "Газ"
 #define D_GATEWAY "Шлюз"
 #define D_GROUP "Группа"
@@ -95,6 +105,7 @@
 #define D_IMMEDIATE "немедленно"      // Button immediate
 #define D_INDEX "Индекс"
 #define D_INFO "Инфо"
+#define D_INFRARED "Infrared"
 #define D_INITIALIZED "Инициализировано"
 #define D_IP_ADDRESS "IP Адрес"
 #define D_LIGHT "Свет"
@@ -113,6 +124,9 @@
 #define D_PORT "Порт"
 #define D_POWER_FACTOR "Коэффициент Мощности"
 #define D_POWERUSAGE "Мощность"
+#define D_POWERUSAGE_ACTIVE "Active Power"
+#define D_POWERUSAGE_APPARENT "Apparent Power"
+#define D_POWERUSAGE_REACTIVE "Reactive Power"
 #define D_PRESSURE "Давление"
 #define D_PRESSUREATSEALEVEL "Давление на уровне моря"
 #define D_PROGRAM_FLASH_SIZE "Размер Flash для программ"
@@ -124,6 +138,7 @@
 #define D_RESTART_REASON "Причина перезагрузки"
 #define D_RESTORE "восстановление"
 #define D_RETAINED "нераспред."
+#define D_RULE "Rule"
 #define D_SAVE "Сохранить"
 #define D_SENSOR "Датчик"
 #define D_SSID "SSId"
@@ -133,17 +148,21 @@
 #define D_SUBNET_MASK "Маска Подсети"
 #define D_SUBSCRIBE_TO "Подписаться на"
 #define D_SUCCESSFUL "Успешно"
+#define D_SUNRISE "Sunrise"
+#define D_SUNSET "Sunset"
 #define D_TEMPERATURE "Температура"
 #define D_TO "до"
 #define D_TOGGLE "Переключить"
 #define D_TOPIC "Топик"
 #define D_TRANSMIT "Передать"
 #define D_TRUE "Истина"
+#define D_TVOC "TVOC"
 #define D_UPGRADE "обновление"
 #define D_UPLOAD "Загрузить"
 #define D_UPTIME "Uptime"
 #define D_USER "Пользователь"
 #define D_UTC_TIME "UTC"
+#define D_UV_INDEX "UV Index"
 #define D_UV_LEVEL "УФ уровень"
 #define D_VERSION "Версия"
 #define D_VOLTAGE "Напряжение"
@@ -161,13 +180,6 @@
 #define D_RECEIVED_TOPIC "Полученный Топик"
 #define D_DATA_SIZE "Размер данных"
 #define D_ANALOG_INPUT "Аналоговый вход"
-
-#define D_FINGERPRINT "Проверка TLS Fingerprint..."
-#define D_TLS_CONNECT_FAILED_TO "Сбой подключения TLS к"
-#define D_RETRY_IN "Повторить"
-#define D_VERIFIED "Проверено"
-#define D_INSECURE "Небезопасное соединение, недействительный Fingerprint"
-#define D_CONNECT_FAILED_TO "Ошибка подключения к"
 
 // support.ino
 #define D_OSWATCH "osWatch"
@@ -195,7 +207,8 @@
 #define D_USE_DEFAULTS "Использовать значение по умолчанию"
 #define D_ERASED_SECTOR "Стереть сектор"
 
-// webserver.ino
+// xdrv_02_webserver.ino
+#define D_NOSCRIPT "To use Tasmota, please enable JavaScript"
 #define D_MINIMAL_FIRMWARE_PLEASE_UPGRADE "Прошивка MINIMAL - пожалуйста обновите"
 #define D_WEBSERVER_ACTIVE_ON "Веб-сервер активен"
 #define D_WITH_IP_ADDRESS "с IP-адресом"
@@ -311,13 +324,25 @@
 #define D_UPLOAD_ERR_7 "Загрузка прервана"
 #define D_UPLOAD_ERR_8 "Файл неверный"
 #define D_UPLOAD_ERR_9 "Слишком большой файл"
+#define D_UPLOAD_ERR_10 "Failed to init RF chip"
+#define D_UPLOAD_ERR_11 "Failed to erase RF chip"
+#define D_UPLOAD_ERR_12 "Failed to write to RF chip"
+#define D_UPLOAD_ERR_13 "Failed to decode RF firmware"
 #define D_UPLOAD_ERROR_CODE "Код ошибки загрузки"
 
 #define D_ENTER_COMMAND "Введите команду"
 #define D_ENABLE_WEBLOG_FOR_RESPONSE "Включить Веб лог уровня 2 если ожидается ответ"
 #define D_NEED_USER_AND_PASSWORD "Ожидается user=<username>&password=<password>"
 
-// xdrv_wemohue.ino
+// xdrv_01_mqtt.ino
+#define D_FINGERPRINT "Проверка TLS Fingerprint..."
+#define D_TLS_CONNECT_FAILED_TO "Сбой подключения TLS к"
+#define D_RETRY_IN "Повторить"
+#define D_VERIFIED "Проверено Fingerprint"
+#define D_INSECURE "Небезопасное соединение, недействительный Fingerprint"
+#define D_CONNECT_FAILED_TO "Ошибка подключения к"
+
+// xplg_wemohue.ino
 #define D_MULTICAST_DISABLED "Multicast отключен"
 #define D_MULTICAST_REJOINED "Multicast (ре)соединился"
 #define D_MULTICAST_JOIN_FAILED "Multicast ошибка соединения"
@@ -337,7 +362,7 @@
 #define D_HUE_POST_ARGS "Hue POST args"
 #define D_3_RESPONSE_PACKETS_SENT "3 ответных пакета получено"
 
-// xdrv_05_domoticz.ino
+// xdrv_07_domoticz.ino
 #define D_DOMOTICZ_PARAMETERS "Domoticz parameters"
 #define D_DOMOTICZ_IDX "Idx"
 #define D_DOMOTICZ_KEY_IDX "Key idx"
@@ -348,11 +373,45 @@
   #define D_DOMOTICZ_TEMP_HUM_BARO "Temp,Hum,Baro"
   #define D_DOMOTICZ_POWER_ENERGY "Power,Energy"
   #define D_DOMOTICZ_ILLUMINANCE "Illuminance"
-  #define D_DOMOTICZ_COUNT "Count"
-  #define D_DOMOTICZ_VOLTAGE "Voltage"
-  #define D_DOMOTICZ_CURRENT "Current"
+  #define D_DOMOTICZ_COUNT "Count/PM1"
+  #define D_DOMOTICZ_VOLTAGE "Voltage/PM2,5"
+  #define D_DOMOTICZ_CURRENT "Current/PM10"
   #define D_DOMOTICZ_AIRQUALITY "AirQuality"
 #define D_DOMOTICZ_UPDATE_TIMER "Update timer"
+
+// xdrv_09_timers.ino
+#define D_CONFIGURE_TIMER "Configure Timer"
+#define D_TIMER_PARAMETERS "Timer parameters"
+#define D_TIMER_ENABLE "Enable Timers"
+#define D_TIMER_ARM "Arm"
+#define D_TIMER_TIME "Time"
+#define D_TIMER_DAYS "Days"
+#define D_TIMER_REPEAT "Repeat"
+#define D_TIMER_OUTPUT "Output"
+#define D_TIMER_ACTION "Action"
+
+// xdrv_10_knx.ino
+#define D_CONFIGURE_KNX "Configure KNX"
+#define D_KNX_PARAMETERS "KNX Parameters"
+#define D_KNX_GENERAL_CONFIG "General"
+#define D_KNX_PHYSICAL_ADDRESS "Physical Address"
+#define D_KNX_PHYSICAL_ADDRESS_NOTE "( Must be unique on the KNX network )"
+#define D_KNX_ENABLE "Enable KNX"
+#define D_KNX_GROUP_ADDRESS_TO_WRITE "Data to Send to Group Addresses"
+#define D_ADD "Add"
+#define D_DELETE "Delete"
+#define D_REPLY "Reply"
+#define D_KNX_GROUP_ADDRESS_TO_READ "Group Addresses to Receive Data from"
+#define D_LOG_KNX "KNX: "
+#define D_RECEIVED_FROM "Received from"
+#define D_KNX_COMMAND_WRITE "Write"
+#define D_KNX_COMMAND_READ "Read"
+#define D_KNX_COMMAND_OTHER "Other"
+#define D_SENT_TO "sent to"
+#define D_KNX_WARNING "The group address ( 0 / 0 / 0 ) is reserved and can not be used."
+#define D_KNX_ENHANCEMENT "Communication Enhancement"
+#define D_KNX_TX_SLOT "KNX TX"
+#define D_KNX_RX_SLOT "KNX RX"
 
 // xdrv_03_energy.ino
 #define D_ENERGY_TODAY "Энергия Сегодня"
@@ -380,8 +439,15 @@
 #define D_ENVIRONMENTAL_CONCENTRATION "PM"     // Environmetal Particle Matter
 #define D_PARTICALS_BEYOND "Particals"
 
+// xsns_32_mpu6050.ino
+#define D_AX_AXIS "Accel. X-Axis"
+#define D_AY_AXIS "Accel. Y-Axis"
+#define D_AZ_AXIS "Accel. Z-Axis"
+#define D_GX_AXIS "Gyro X-Axis"
+#define D_GY_AXIS "Gyro Y-Axis"
+#define D_GZ_AXIS "Gyro Z-Axis"
+
 // sonoff_template.h
-// Max string length is 8 characters including suffixes
 #define D_SENSOR_NONE     "-нет-"
 #define D_SENSOR_DHT11    "DHT11"
 #define D_SENSOR_AM2301   "AM2301"
@@ -408,9 +474,23 @@
 #define D_SENSOR_SPI_DC   "SPI DC"
 #define D_SENSOR_BACKLIGHT "BkLight"
 #define D_SENSOR_PMS5003  "PMS5003"
+#define D_SENSOR_SDS0X1   "SDS0X1"
+#define D_SENSOR_SBR_RX   "SerBr Rx"
+#define D_SENSOR_SBR_TX   "SerBr Tx"
+#define D_SENSOR_SR04_TRIG "SR04 Tri"
+#define D_SENSOR_SR04_ECHO "SR04 Ech"
+#define D_SENSOR_SDM120_TX "SDM120 Tx"
+#define D_SENSOR_SDM120_RX "SDM120 Rx"
+#define D_SENSOR_SDM630_TX "SDM630 Tx"
+#define D_SENSOR_SDM630_RX "SDM630 Rx"
+#define D_SENSOR_TM1638_CLK "TM16 CLK"
+#define D_SENSOR_TM1638_DIO "TM16 DIO"
+#define D_SENSOR_TM1638_STB "TM16 STB"
 
 // Units
 #define D_UNIT_AMPERE "А"
+#define D_UNIT_CENTIMETER "cm"
+#define D_UNIT_HERTZ "Hz"
 #define D_UNIT_HOUR "Ч"
 #define D_UNIT_KILOOHM "кОм"
 #define D_UNIT_KILOWATTHOUR "кВт"
@@ -421,11 +501,14 @@
 #define D_UNIT_MILLIAMPERE "мА"
 #define D_UNIT_MILLISECOND "мс"
 #define D_UNIT_MINUTE "мин"
+#define D_UNIT_PARTS_PER_BILLION "ppb"
 #define D_UNIT_PARTS_PER_DECILITER "ppd"
 #define D_UNIT_PARTS_PER_MILLION "ppm"
 #define D_UNIT_PRESSURE "гПа"
 #define D_UNIT_SECOND "сек"
 #define D_UNIT_SECTORS "секторов"
+#define D_UNIT_VA "VA"
+#define D_UNIT_VAR "VAr"
 #define D_UNIT_VOLT "В"
 #define D_UNIT_WATT "Вт"
 #define D_UNIT_WATTHOUR "ВтЧ"
