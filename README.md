@@ -1,5 +1,9 @@
 ## Customization
 Changed project name; module type; wifi.
+Additional configuration right before using
+```
+Backlog AmpRes 2; EnergyRes 3; SetOption21 on
+```
 
 ## Sonoff-Tasmota
 
