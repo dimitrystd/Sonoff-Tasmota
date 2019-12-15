@@ -61,6 +61,11 @@
 #undef WIFI_CONFIG_TOOL
 #define WIFI_CONFIG_TOOL       WIFI_RETRY
 
+#undef PROJECT
+#define PROJECT                "h801_bedroom"
+#undef MODULE
+#define MODULE                 H801
+
 // -- Syslog --------------------------------------
 #undef SERIAL_LOG_LEVEL
 #define SERIAL_LOG_LEVEL       LOG_LEVEL_NONE   // [SerialLog] (LOG_LEVEL_NONE, LOG_LEVEL_ERROR, LOG_LEVEL_INFO, LOG_LEVEL_DEBUG, LOG_LEVEL_DEBUG_MORE)
