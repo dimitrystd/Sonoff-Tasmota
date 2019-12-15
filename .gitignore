@@ -22,3 +22,7 @@ platformio_override.ini
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 *.bak
+
+# Ingnote Atom files
+.tags
+.tags1
